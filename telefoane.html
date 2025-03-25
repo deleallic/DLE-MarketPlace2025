@@ -151,7 +151,6 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    /* Am eliminat elementul .filter-left cu butonul "Filtru" */
     .filter-center {
       font-size: 0.95rem;
       display: inline-flex;
@@ -314,13 +313,10 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
       }
-      .add-announcement form {
-        gap: 8px;
-      }
     }
     @media (max-width: 480px) {
       .products-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
       .filter-row {
         align-items: stretch;
@@ -477,7 +473,7 @@
   <section class="telefoane-section">
     <h1>TELEFOANE</h1>
 
-    <!-- Zona de filtrare (fără butonul "Filtru") -->
+    <!-- Zona de filtrare -->
     <div class="filter-row">
       <div class="filter-center">
         Filtrare după:
