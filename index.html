@@ -57,6 +57,7 @@
       justify-content: center;
       list-style: none;
     }
+    /* Linkurile din navbar */
     #menu li a {
       color: #fff;
       text-decoration: none;
@@ -236,9 +237,7 @@
       }
     }
 
-    /* =========================================
-       SECȚIUNEA: "VEZI TOATE PRODUSELE"
-       ========================================= */
+    /* Secțiunea "VEZI TOATE PRODUSELE" */
     .products-section {
       margin: 50px auto 80px;
       max-width: 1200px;
@@ -283,15 +282,12 @@
     }
     @media (max-width: 480px) {
       .products-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
       }
     }
 
-    /* =========================================
-       SECȚIUNEA: "CARACTERISTICI"
-       (Prosop Auto Flash, Detailing Interior, Detailing Exterior)
-       ========================================= */
+    /* Secțiunea "CARACTERISTICI" */
     .features-section {
       max-width: 1200px;
       margin: 80px auto;
@@ -342,9 +338,7 @@
       }
     }
 
-    /* =========================================
-       SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
-       ========================================= */
+    /* Secțiunea "POLITICI ȘI INFORMAȚII" */
     .info-section {
       margin: 50px auto 80px;
       max-width: 1200px;
@@ -372,7 +366,7 @@
     }
     .info-item img {
       width: 100%;
-      max-width: 150px; /* Dimensiune similară cu produsele */
+      max-width: 150px;
       height: auto;
       margin-bottom: 10px;
       transition: transform 0.3s ease;
@@ -399,9 +393,7 @@
       }
     }
 
-    /* =========================================
-       Subsol (Footer)
-       ========================================= */
+    /* Subsol (Footer) */
     footer {
       background-color: #222;
       color: #fff;
@@ -410,13 +402,11 @@
       position: relative;
       text-align: center;
     }
-    /* Pentru desktop: aranjare pe 3 zone */
     @media (min-width: 769px) {
       .footer-row {
         position: relative;
         height: 100px;
       }
-      /* Partea stângă: imagini ANPC și Autenticitate în colțul stânga jos */
       .footer-left {
         position: absolute;
         bottom: 20px;
@@ -427,7 +417,6 @@
         height: auto;
         margin-right: 5px;
       }
-      /* Partea centrală: textul și cardurile de plată, centrate */
       .footer-center {
         position: absolute;
         bottom: 20px;
@@ -437,14 +426,12 @@
       .payment-cards {
         margin-top: 10px;
       }
-      /* Bula WhatsApp, poziționată în colțul dreaptă-sus */
       .whatsapp-bubble {
         position: absolute;
         top: 20px;
         right: 20px;
       }
     }
-    /* Pentru mobil: aranjare verticală */
     @media (max-width: 768px) {
       .footer-row {
         display: flex;
@@ -464,7 +451,6 @@
         max-width: 30px;
       }
     }
-    /* Wrapper pentru footer */
     .footer-row {
       display: flex;
       justify-content: space-between;
@@ -494,6 +480,115 @@
       height: 24px;
       margin-left: 8px;
     }
+
+    /* =========================================
+       SECȚIUNEA "Adaugă Anunț" - formularul este vizibil din start
+       ========================================= */
+    .add-announcement {
+      background-color: #222;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 40px;
+    }
+    .add-announcement h2 {
+      color: #ffdf00;
+      margin-bottom: 15px;
+    }
+    .add-announcement form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .add-announcement input, 
+    .add-announcement select {
+      padding: 8px;
+      font-size: 0.95rem;
+      border: 1px solid #555;
+      border-radius: 3px;
+    }
+    .add-announcement button[type="submit"] {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 150px;
+      align-self: flex-start;
+    }
+    .add-announcement button[type="submit"]:hover {
+      background-color: #e5c900;
+    }
+
+    /* Responsivitate */
+    @media (max-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: inline-block;
+      }
+      #menu {
+        flex-direction: column;
+        background-color: #555454e0;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .telefoane-section {
+        margin: 80px auto 60px;
+      }
+      .filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .filter-center {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .filter-center select {
+        width: 100%;
+        margin-top: 5px;
+      }
+      .price-options {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 5px;
+      }
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .add-announcement form {
+        gap: 8px;
+      }
+    }
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .filter-row {
+        align-items: stretch;
+      }
+      .filter-center, .filter-right {
+        margin-bottom: 5px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -507,30 +602,27 @@
   <nav class="navbar">
     <div class="logo">DLE-MarketPlace</div>
     <ul id="menu">
-      <li><a href="#">ACASĂ</a></li>
-      <li><a href="#">TELEFOANE</a></li>
-      <li><a href="#">TABLETE</a></li>
-      <li><a href="#">CASTI</a></li>
-      <li><a href="#">PC</a></li>
-      <li><a href="#">LAPTOPURI</a></li>
-      <li><a href="#">CEASURI</a></li>
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
     </ul>
     <div class="nav-icons">
-      <!-- Iconița de căutare -->
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="M21 21l-4.3-4.3"></path>
         </svg>
       </a>
-      <!-- Iconița pentru cont (login) -->
       <a href="login.html" aria-label="Contul meu">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="7" r="4"></circle>
           <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
         </svg>
       </a>
-      <!-- Iconița pentru coș (cos.html) -->
       <a href="cos.html" aria-label="Coș de cumpărături">
         <svg viewBox="0 0 24 24">
           <path d="M6 2v4"></path>
@@ -546,7 +638,7 @@
   <!-- Overlay pentru bara de căutare -->
   <div class="search-overlay" id="searchOverlay">
     <div class="search-box">
-      <input type="text" placeholder="Căutare..." />
+      <input type="text" placeholder="Căutare..." id="searchInput" />
       <span class="search-icon">Q</span>
       <span class="close-search" onclick="closeSearch()">X</span>
     </div>
@@ -625,9 +717,8 @@
     </div>
   </section>
 
-  <!-- Secțiunea "CARACTERISTICI" (Plasată între produse și politici/informații) -->
+  <!-- Secțiunea "CARACTERISTICI" -->
   <section class="features-section">
-    <!-- 1. PROSOP AUTO FLASH -->
     <div class="feature-row">
       <img src="Apple-iPhone-15-Pro-lineup-Action-button-230912.jpg.large_2x.jpg" alt="Prosop Auto Flash">
       <div class="feature-content">
@@ -639,7 +730,6 @@
         <button>PROSOP FLASH</button>
       </div>
     </div>
-    <!-- 2. DETAILING INTERIOR -->
     <div class="feature-row">
       <img src="airpods.jpg" alt="Detailing Interior">
       <div class="feature-content">
@@ -651,7 +741,6 @@
         <button>PRODUSE EXTERIOR</button>
       </div>
     </div>
-    <!-- 3. DETAILING EXTERIOR -->
     <div class="feature-row">
       <img src="nouapozaiphone.jpg" alt="Detailing Exterior">
       <div class="feature-content">
@@ -708,18 +797,30 @@
     </div>
   </section>
 
+  <!-- Secțiunea de adăugare anunț (sub produsele existente) -->
+  <section class="products-section">
+    <div class="add-announcement" id="addAnnouncementContainer">
+      <h2>Adaugă Anunț</h2>
+      <form id="addAnnouncementForm">
+        <input type="text" id="prodTitle" placeholder="Titlu produs" required />
+        <input type="text" id="prodImg" placeholder="URL imagine" required />
+        <input type="number" id="prodPrice" placeholder="Preț (lei)" required />
+        <input type="number" id="prodMonthly" placeholder="Preț lunar (lei)" required />
+        <input type="text" id="prodRating" placeholder="Rating și recenzii" required />
+        <button type="submit">Adaugă</button>
+      </form>
+    </div>
+  </section>
+
   <!-- Subsol (Footer) -->
   <footer>
     <div class="footer-row">
-      <!-- Partea stângă: imagini ANPC și Autenticitate, poziționate în colțul stânga jos -->
       <div class="footer-left">
         <img src="anpc.jpg" alt="ANPC" />
         <img src="original.jpg" alt="Autenticitate" />
       </div>
-      
-      <!-- Partea centrală: text și carduri de plată, centrate -->
       <div class="footer-center">
-        <p>DLE-MarketPlace-2025-Toate drepturile rezervate</p>
+        <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
         <div class="payment-cards">
           <img src="visa.jpg" alt="Visa">
           <img src="applepay.jpg" alt="Apple Pay">
@@ -728,8 +829,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Bula WhatsApp, poziționată în colțul dreaptă-sus pentru desktop -->
     <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
       Salut, ne poți contacta aici!
       <img src="whatapp.jpg" alt="WhatsApp">
@@ -743,32 +842,6 @@
       var menu = document.getElementById("menu");
       menu.classList.toggle("show");
     }
-
-    // Caruselul de imagini
-    const track = document.querySelector('.carousel-track');
-    const slides = Array.from(track.children);
-    const prevArrow = document.querySelector('.carousel-prev');
-    const nextArrow = document.querySelector('.carousel-next');
-    let currentSlideIndex = 0;
-
-    function updateCarousel() {
-      const slideWidth = slides[0].getBoundingClientRect().width;
-      track.style.transform = 'translateX(' + (-slideWidth * currentSlideIndex) + 'px)';
-    }
-
-    nextArrow.addEventListener('click', () => {
-      currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-      updateCarousel();
-    });
-
-    prevArrow.addEventListener('click', () => {
-      currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-      updateCarousel();
-    });
-
-    window.addEventListener('resize', updateCarousel);
-
-    // Funcții pentru bara de căutare
     function toggleSearch() {
       document.querySelector('.navbar').style.display = 'none';
       document.getElementById('searchOverlay').style.display = 'flex';
@@ -777,6 +850,87 @@
       document.querySelector('.navbar').style.display = 'grid';
       document.getElementById('searchOverlay').style.display = 'none';
     }
+    
+    // Funcționalitatea de search
+    document.getElementById('searchInput').addEventListener('input', function() {
+      var query = this.value.toLowerCase().trim();
+      var productCards = document.querySelectorAll('.products-grid .product-card');
+      productCards.forEach(function(card) {
+        var title = card.querySelector('h2').textContent.toLowerCase();
+        card.style.display = title.includes(query) ? "" : "none";
+      });
+    });
+    
+    // Funcționalitatea selectului de filtrare
+    var filterSelect = document.getElementById('filterSelect');
+    var priceOptions = document.getElementById('priceOptions');
+    filterSelect.addEventListener('change', function() {
+      if (this.value === "Pret") {
+        priceOptions.style.display = "inline-flex";
+        filterProducts();
+      } else {
+        priceOptions.style.display = "none";
+        location.reload();
+      }
+    });
+    document.getElementById('priceOrder').addEventListener('change', filterProducts);
+    document.getElementById('priceRange').addEventListener('change', filterProducts);
+    
+    function filterProducts() {
+      var order = document.getElementById('priceOrder').value;
+      var range = document.getElementById('priceRange').value;
+      var productsGrid = document.getElementById('productsGrid');
+      var productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
+      
+      var minPrice = 0, maxPrice = Infinity;
+      if (range !== "all") {
+        var parts = range.split("-");
+        minPrice = parseFloat(parts[0]);
+        maxPrice = parseFloat(parts[1]);
+      }
+      
+      var filtered = productCards.filter(function(card) {
+        var price = parseFloat(card.getAttribute('data-price'));
+        return price >= minPrice && price <= maxPrice;
+      });
+      
+      filtered.sort(function(a, b) {
+        var priceA = parseFloat(a.getAttribute('data-price'));
+        var priceB = parseFloat(b.getAttribute('data-price'));
+        return order === "asc" ? priceA - priceB : priceB - priceA;
+      });
+      
+      productsGrid.innerHTML = "";
+      filtered.forEach(function(card) {
+        productsGrid.appendChild(card);
+      });
+    }
+    
+    // Funcționalitatea de adăugare a anunțului
+    document.getElementById('addAnnouncementForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      var title = document.getElementById('prodTitle').value;
+      var imgUrl = document.getElementById('prodImg').value;
+      var price = document.getElementById('prodPrice').value;
+      var monthly = document.getElementById('prodMonthly').value;
+      var rating = document.getElementById('prodRating').value;
+      
+      var newCard = document.createElement('a');
+      newCard.href = "#";
+      newCard.className = "product-card";
+      newCard.setAttribute("data-price", price);
+      newCard.innerHTML = `
+        <img src="${imgUrl}" alt="${title}">
+        <h2>${title}</h2>
+        <div class="rating">${rating}</div>
+        <div class="price">${parseFloat(price).toLocaleString('ro-RO')} lei</div>
+        <div class="monthly">de la ${monthly} lei/lună</div>
+      `;
+      
+      document.getElementById('productsGrid').appendChild(newCard);
+      this.reset();
+    });
   </script>
 </body>
 </html>
