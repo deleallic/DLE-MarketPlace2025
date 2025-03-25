@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace</title>
+
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Fundal negru */
+    html, body {
+      background-color: #000;
+    }
+
+    /* Bara de sus (transport gratuit) */
+    .top-bar {
+      background-color: #ffffff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    /* Bara de navigație cu gradient */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    /* Logo cu fade in */
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Meniul centrat */
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+
+    /* Icoanele + butonul hamburger */
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none; /* ascunsă inițial */
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    /* Secțiunea Carusel */
+    .carousel-section {
+      margin-top: 0;
+      position: relative;
+    }
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item {
+      flex: 0 0 100%;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .carousel-arrows {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .carousel-arrows span {
+      cursor: pointer;
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 10px;
+      font-size: 24px;
+      user-select: none;
+    }
+
+    /* Media query desktop: imagini carusel mai mici */
+    @media (min-width: 1024px) {
+      .carousel-container {
+        height: 600px;
+      }
+      .carousel-track {
+        height: 100%;
+      }
+      .carousel-item {
+        flex: 0 0 100%;
+        height: 100%;
+      }
+      .carousel-item img {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    /* Responsivitate mobil */
+    @media (max-width: 768px) {
+      .top-bar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1100;
+        height: 40px;
+        line-height: 40px;
+      }
+      nav.navbar {
+        position: fixed;
+        top: 40px; left: 0; right: 0;
+        z-index: 1000;
+      }
+      #menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #555454e0;
+        flex-direction: column;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .menu-icon {
+        display: inline-block;
+      }
+      .carousel-arrows span {
+        font-size: 20px;
+        padding: 8px;
+      }
+      .carousel-section {
+        margin-top: 80px;
+      }
+    }
+
+    /* =========================================
+       SECȚIUNEA: "VEZI TOATE PRODUSELE"
+       ========================================= */
+    .products-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .products-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .product-item {
+      text-align: center;
+    }
+    .product-item img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .product-item img:hover {
+      transform: scale(1.1);
+    }
+    .product-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+
+    /* =========================================
+       SECȚIUNEA: "CARACTERISTICI"
+       (Prosop Auto Flash, Detailing Interior, Detailing Exterior)
+       ========================================= */
+    .features-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+      color: #fff;
+    }
+    .feature-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 50px;
+    }
+    .feature-row img {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+      margin-right: 20px;
+    }
+    .feature-content h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .feature-content p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .feature-content button {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .feature-content button:hover {
+      background-color: #e5c900;
+    }
+    @media (max-width: 768px) {
+      .feature-row {
+        flex-direction: column;
+        text-align: center;
+      }
+      .feature-row img {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+    }
+
+    /* =========================================
+       SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
+       ========================================= */
+    .info-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .info-item {
+      text-align: center;
+    }
+    .info-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .info-item img {
+      width: 100%;
+      max-width: 150px; /* Dimensiune similară cu produsele */
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .info-item img:hover {
+      transform: scale(1.1);
+    }
+    .info-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+
+    /* =========================================
+       Subsol (Footer)
+       ========================================= */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    /* Pentru desktop: aranjare pe 3 zone */
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      /* Partea stângă: imagini ANPC și Autenticitate în colțul stânga jos */
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      /* Partea centrală: textul și cardurile de plată, centrate */
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      /* Bula WhatsApp, poziționată în colțul dreaptă-sus */
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    /* Pentru mobil: aranjare verticală */
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    /* Wrapper pentru footer */
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+
+  <!-- Bara de navigație -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="#">ACASĂ</a></li>
+      <li><a href="#">TELEFOANE</a></li>
+      <li><a href="#">TABLETE</a></li>
+      <li><a href="#">CASTI</a></li>
+      <li><a href="#">PC</a></li>
+      <li><a href="#">LAPTOPURI</a></li>
+      <li><a href="#">CEASURI</a></li>
+    </ul>
+    <div class="nav-icons">
+      <!-- Iconița de căutare -->
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru cont (login) -->
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru coș (cos.html) -->
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+
+  <!-- Overlay pentru bara de căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+
+  <!-- Secțiunea Carusel -->
+  <section class="carousel-section">
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <img src="16promax11.jpg" alt="Imagine 1">
+        </div>
+        <div class="carousel-item">
+          <img src="airpods.jpg" alt="Imagine 2">
+        </div>
+        <div class="carousel-item">
+          <img src="pcfundal.jpg" alt="Imagine 3">
+        </div>
+        <div class="carousel-item">
+          <img src="applewatch11.jpg" alt="Imagine 4">
+        </div>
+      </div>
+    </div>
+    <div class="carousel-arrows">
+      <span class="carousel-prev">&#10094;</span>
+      <span class="carousel-next">&#10095;</span>
+    </div>
+  </section>
+
+  <!-- Secțiunea "VEZI TOATE PRODUSELE" -->
+  <section class="products-section">
+    <h2>VEZI TOATE PRODUSELE:</h2>
+    <div class="products-grid">
+      <!-- 1. Telefoane -->
+      <div class="product-item">
+        <a href="telefoane.html">
+          <img src="nouapozaiphone.jpg" alt="Telefoane">
+        </a>
+        <p>TELEFOANE</p>
+      </div>
+      <!-- 2. Tablete -->
+      <div class="product-item">
+        <a href="tablete.html">
+          <img src="ipadpro.jpg" alt="Tablete">
+        </a>
+        <p>TABLETE</p>
+      </div>
+      <!-- 3. Casti -->
+      <div class="product-item">
+        <a href="casti.html">
+          <img src="airpods.jpg" alt="Casti">
+        </a>
+        <p>CASTI</p>
+      </div>
+      <!-- 4. PC -->
+      <div class="product-item">
+        <a href="pc.html">
+          <img src="pcfundal.jpg" alt="PC">
+        </a>
+        <p>PC</p>
+      </div>
+      <!-- 5. Laptopuri -->
+      <div class="product-item">
+        <a href="laptopuri.html">
+          <img src="macbook3.jpg" alt="Laptopuri">
+        </a>
+        <p>LAPTOPURI</p>
+      </div>
+      <!-- 6. Ceasuri -->
+      <div class="product-item">
+        <a href="ceasuri.html">
+          <img src="applewatch11.jpg" alt="Ceasuri">
+        </a>
+        <p>CEASURI</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secțiunea "CARACTERISTICI" (Plasată între produse și politici/informații) -->
+  <section class="features-section">
+    <!-- 1. PROSOP AUTO FLASH -->
+    <div class="feature-row">
+      <img src="Apple-iPhone-15-Pro-lineup-Action-button-230912.jpg.large_2x.jpg" alt="Prosop Auto Flash">
+      <div class="feature-content">
+        <h3>PROSOP AUTO FLASH</h3>
+        <p>
+          Prosoapele auto microfibră Flash absoarb de 10 ori greutatea lor,
+          șterg rapid și lasă suprafața complet uscată.
+        </p>
+        <button>PROSOP FLASH</button>
+      </div>
+    </div>
+    <!-- 2. DETAILING INTERIOR -->
+    <div class="feature-row">
+      <img src="airpods.jpg" alt="Detailing Interior">
+      <div class="feature-content">
+        <h3>DETAILING INTERIOR</h3>
+        <p>
+          Curăță și întreține aspectul interior cu soluțiile noastre premium.
+          Oferă un finish impecabil și protecție de durată.
+        </p>
+        <button>PRODUSE EXTERIOR</button>
+      </div>
+    </div>
+    <!-- 3. DETAILING EXTERIOR -->
+    <div class="feature-row">
+      <img src="nouapozaiphone.jpg" alt="Detailing Exterior">
+      <div class="feature-content">
+        <h3>DETAILING EXTERIOR</h3>
+        <p>
+          Folosește spumă activă și soluțiile de curățare pentru un aspect
+          excelent al caroseriei și protecție îndelungată.
+        </p>
+        <button>PRODUSE EXTERIOR</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secțiunea "POLITICI ȘI INFORMAȚII" -->
+  <section class="info-section">
+    <h2>POLITICI ȘI INFORMAȚII</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <a href="rambursare.html">
+          <img src="rambursare.png" alt="Politica de rambursare">
+          <p>Politica de rambursare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="confidentialitate.html">
+          <img src="confidentialitate.png" alt="Politica de confidențialitate">
+          <p>Politica de confidențialitate</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="termeni.html">
+          <img src="termenii serviciului.png" alt="Termenii serviciului">
+          <p>Termenii serviciului</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="livrare.html">
+          <img src="politicalivrare.png" alt="Politica de livrare">
+          <p>Politica de livrare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="contact.html">
+          <img src="informatiidecontact.png" alt="Informații de contact">
+          <p>Informații de contact</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="aviz.html">
+          <img src="avizjurutic.png" alt="Aviz juridic">
+          <p>Aviz juridic</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <!-- Partea stângă: imagini ANPC și Autenticitate, poziționate în colțul stânga jos -->
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      
+      <!-- Partea centrală: text și carduri de plată, centrate -->
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025-Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+
+    <!-- Bula WhatsApp, poziționată în colțul dreaptă-sus pentru desktop -->
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+
+  <!-- Scripturi JS -->
+  <script>
+    // Meniu mobil (hamburger)
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+
+    // Caruselul de imagini
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const prevArrow = document.querySelector('.carousel-prev');
+    const nextArrow = document.querySelector('.carousel-next');
+    let currentSlideIndex = 0;
+
+    function updateCarousel() {
+      const slideWidth = slides[0].getBoundingClientRect().width;
+      track.style.transform = 'translateX(' + (-slideWidth * currentSlideIndex) + 'px)';
+    }
+
+    nextArrow.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+      updateCarousel();
+    });
+
+    prevArrow.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+      updateCarousel();
+    });
+
+    window.addEventListener('resize', updateCarousel);
+
+    // Funcții pentru bara de căutare
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
