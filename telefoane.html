@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -128,15 +127,11 @@
       cursor: pointer;
       font-size: 1.2rem;
     }
-
-    /* =========================================
-       NOUL CARUSEL SUB NAVBAR
-       ========================================= */
+    /* NOUL CARUSEL SUB NAVBAR */
     .hero-carousel {
       width: 100%;
       overflow: hidden;
       position: relative;
-      /* poți ajusta înălțimea după preferință, ex. 600px */
       height: 600px;
       margin-top: 0;
     }
@@ -152,7 +147,7 @@
     .hero-item img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* umple spațiul pe toată lățimea și înălțimea */
+      object-fit: cover;
       display: block;
     }
     .hero-arrows {
@@ -173,17 +168,14 @@
     }
     @media (max-width: 768px) {
       .hero-carousel {
-        height: 200px; /* mai mic pe mobil, dacă dorești */
+        height: 200px;
       }
       .hero-arrows span {
         font-size: 20px;
         padding: 8px;
       }
     }
-
-    /* =========================================
-       SECTIUNEA TELEFOANE
-       ========================================= */
+    /* SECȚIUNEA TELEFOANE */
     .telefoane-section {
       max-width: 1200px;
       margin: 100px auto 80px;
@@ -239,7 +231,7 @@
       border-radius: 5px;
       color: #fff;
       text-decoration: none;
-      cursor: pointer;
+      position: relative;
     }
     .product-card img {
       width: 100%;
@@ -271,9 +263,22 @@
       font-size: 0.9rem;
       color: #bbb;
     }
-    /* =========================================
-       SECȚIUNEA "Adaugă Anunț"
-       ========================================= */
+    /* Stil pentru butonul de cumpărare */
+    .buy-btn {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .buy-btn:hover {
+      background-color: #e5c900;
+    }
+    /* SECȚIUNEA "Adaugă Anunț" */
     .add-announcement {
       background-color: #222;
       padding: 20px;
@@ -311,9 +316,7 @@
     .add-announcement button[type="submit"]:hover {
       background-color: #e5c900;
     }
-    /* =========================================
-       Responsivitate
-       ========================================= */
+    /* Responsivitate */
     @media (max-width: 1024px) {
       .products-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -377,9 +380,7 @@
         margin-bottom: 5px;
       }
     }
-    /* =========================================
-       Subsol (Footer)
-       ========================================= */
+    /* Subsol (Footer) */
     footer {
       background-color: #222;
       color: #fff;
@@ -466,7 +467,6 @@
       height: 24px;
       margin-left: 8px;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -592,6 +592,7 @@
         <div class="monthly">
           de la 249 lei/lună
         </div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 2 -->
       <a href="samsungS23.html" class="product-card" data-price="4499">
@@ -606,6 +607,7 @@
         <div class="monthly">
           de la 199 lei/lună
         </div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 3 -->
       <a href="xiaomi13pro.html" class="product-card" data-price="3999">
@@ -620,6 +622,7 @@
         <div class="monthly">
           de la 179 lei/lună
         </div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 4 -->
       <a href="googlepixel7.html" class="product-card" data-price="3299">
@@ -634,6 +637,7 @@
         <div class="monthly">
           de la 149 lei/lună
         </div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
     </div>
 
@@ -696,22 +700,18 @@
     const prevArrow = document.querySelector('.hero-prev');
     const nextArrow = document.querySelector('.hero-next');
     let currentSlideIndex = 0;
-
     function updateCarousel() {
       const slideWidth = heroItems[0].getBoundingClientRect().width;
       heroTrack.style.transform = 'translateX(' + (-slideWidth * currentSlideIndex) + 'px)';
     }
-
     nextArrow.addEventListener('click', () => {
       currentSlideIndex = (currentSlideIndex + 1) % heroItems.length;
       updateCarousel();
     });
-
     prevArrow.addEventListener('click', () => {
       currentSlideIndex = (currentSlideIndex - 1 + heroItems.length) % heroItems.length;
       updateCarousel();
     });
-
     window.addEventListener('resize', updateCarousel);
 
     // Funcționalitatea de search
@@ -738,31 +738,26 @@
     });
     document.getElementById('priceOrder').addEventListener('change', filterProducts);
     document.getElementById('priceRange').addEventListener('change', filterProducts);
-
     function filterProducts() {
       var order = document.getElementById('priceOrder').value;
       var range = document.getElementById('priceRange').value;
       var productsGrid = document.getElementById('productsGrid');
       var productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
-
       var minPrice = 0, maxPrice = Infinity;
       if (range !== "all") {
         var parts = range.split("-");
         minPrice = parseFloat(parts[0]);
         maxPrice = parseFloat(parts[1]);
       }
-
       var filtered = productCards.filter(function(card) {
         var price = parseFloat(card.getAttribute('data-price'));
         return price >= minPrice && price <= maxPrice;
       });
-
       filtered.sort(function(a, b) {
         var priceA = parseFloat(a.getAttribute('data-price'));
         var priceB = parseFloat(b.getAttribute('data-price'));
         return order === "asc" ? priceA - priceB : priceB - priceA;
       });
-
       productsGrid.innerHTML = "";
       filtered.forEach(function(card) {
         productsGrid.appendChild(card);
@@ -777,7 +772,6 @@
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
       var rating = document.getElementById('prodRating').value;
-
       var newCard = document.createElement('a');
       newCard.href = "#";
       newCard.className = "product-card";
@@ -788,11 +782,33 @@
         <div class="rating">${rating}</div>
         <div class="price">${parseFloat(price).toLocaleString('ro-RO')} lei</div>
         <div class="monthly">de la ${monthly} lei/lună</div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       `;
-
       document.getElementById('productsGrid').appendChild(newCard);
       this.reset();
     });
+
+    // Funcția pentru adăugarea unui produs în coșul de cumpărături
+    function addToCart(event, button) {
+      event.preventDefault();
+      event.stopPropagation();
+      var productCard = button.closest('.product-card');
+      var title = productCard.querySelector('h2').innerText;
+      var image = productCard.querySelector('img').src;
+      var price = productCard.getAttribute('data-price');
+      var monthly = productCard.querySelector('.monthly').innerText;
+      var product = {
+          title: title,
+          image: image,
+          price: price,
+          monthly: monthly
+      };
+      var cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      cart.push(product);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      alert(title + " a fost adăugat în coș!");
+    }
   </script>
 </body>
 </html>
+
