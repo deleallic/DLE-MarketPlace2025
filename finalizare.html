@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finalizare Comandă - DLE-MarketPlace</title>
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Fundal general închis */
+    body {
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+    }
+
+    /* Container principal */
+    .checkout-container {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    /* Coloana stângă (date de livrare, metode de livrare, metode de plată) */
+    .checkout-left {
+      flex: 1 1 60%;
+      background-color: #111;
+      border-radius: 4px;
+      padding: 20px;
+      min-width: 300px;
+    }
+
+    /* Coloana dreaptă (sumarul comenzii) */
+    .checkout-right {
+      flex: 1 1 35%;
+      background-color: #111;
+      border-radius: 4px;
+      padding: 20px;
+      min-width: 280px;
+      height: fit-content;
+    }
+
+    h2, h3 {
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    h2 {
+      font-size: 1.4rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+
+    /* Formulare */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #000;
+      color: #fff;
+      width: 100%;
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: #666;
+    }
+
+    /* Secțiunile de livrare și plată */
+    .section-block {
+      margin-bottom: 20px;
+      background-color: #222;
+      padding: 15px;
+      border-radius: 4px;
+    }
+    .section-block h4 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+    .payment-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .payment-option input[type="radio"] {
+      accent-color: #ffdf00;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* -- NOU: stiluri pentru chenarul cardului -- */
+    .card-fields {
+      margin-top: 10px;
+      background-color: #222;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 15px;
+      display: none; /* ascuns implicit */
+    }
+    .card-fields label {
+      margin-top: 10px;
+    }
+    .card-fields input {
+      background-color: #000;
+      border: 1px solid #333;
+      color: #fff;
+      margin-bottom: 5px;
+      width: 100%;
+    }
+
+    /* Butonul de Plătește */
+    .pay-btn {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+    .pay-btn:hover {
+      background-color: #e5c900;
+    }
+
+    /* Sumar Comandă (coloana dreaptă) */
+    .order-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .cart-item img {
+      width: 60px;
+      height: auto;
+      border-radius: 4px;
+    }
+    .item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .item-title {
+      font-weight: bold;
+    }
+    .item-price {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .item-remove {
+      cursor: pointer;
+      background-color: transparent;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: #ffdf00;
+      padding: 4px 6px;
+    }
+    .item-remove:hover {
+      background-color: #444;
+    }
+    .total-amount {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #333;
+    }
+
+    /* Responsivitate pentru ecrane mai mici */
+    @media (max-width: 768px) {
+      .checkout-container {
+        flex-direction: column;
+        padding: 10px;
+      }
+      .checkout-left,
+      .checkout-right {
+        width: 100%;
+        flex: none;
+      }
+    }
+    @media (max-width: 480px) {
+      .pay-btn {
+        width: 100%;
+      }
+      .cart-item img {
+        width: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Container principal (poți adăuga un header / nav dacă dorești) -->
+  <div class="checkout-container">
+    <!-- Coloana stângă: date de livrare, metode de livrare, plată -->
+    <div class="checkout-left">
+      <h2>Finalizare Comandă</h2>
+      <form id="checkoutForm">
+        <!-- 1. Date de contact -->
+        <div class="section-block">
+          <h4>Date de contact</h4>
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="ex: nume@domeniu.com" required />
+
+          <label for="phone">Telefon</label>
+          <input type="tel" id="phone" name="phone" placeholder="ex: 07xx xxx xxx" required />
+        </div>
+
+        <!-- 2. Adresă de livrare -->
+        <div class="section-block">
+          <h4>Adresă de livrare</h4>
+          <label for="nume">Nume și Prenume</label>
+          <input type="text" id="nume" name="nume" placeholder="ex: Popescu Andrei" required />
+
+          <label for="address">Adresă</label>
+          <input type="text" id="address" name="address" placeholder="Stradă, nr. bloc, apartament" required />
+
+          <label for="city">Oraș</label>
+          <input type="text" id="city" name="city" placeholder="ex: București" required />
+
+          <label for="county">Județ/Sector</label>
+          <input type="text" id="county" name="county" placeholder="ex: Sector 1 / Ilfov" required />
+        </div>
+
+        <!-- 3. Metodă de livrare -->
+        <div class="section-block">
+          <h4>Metodă de livrare</h4>
+          <select id="shippingMethod" name="shippingMethod">
+            <option value="curier">Curier rapid (24-48h)</option>
+            <option value="posta">Poșta Română (3-5 zile)</option>
+          </select>
+        </div>
+
+        <!-- 4. Metodă de plată -->
+        <div class="section-block">
+          <h4>Metodă de plată</h4>
+          <div class="payment-options">
+            <!-- Card -->
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="card" checked onclick="toggleCardFields()" />
+              <span>Card</span>
+            </label>
+            <!-- Ramburs -->
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="ramburs" onclick="toggleCardFields()" />
+              <span>Ramburs</span>
+            </label>
+            <!-- PayPal a fost eliminat -->
+          </div>
+        </div>
+
+        <!-- Chenar cu câmpuri pentru card -->
+        <div class="card-fields" id="cardFields">
+          <label for="cardNumber">Numărul de card</label>
+          <input type="text" id="cardNumber" placeholder="Numărul de card" />
+
+          <label for="expDate">Data expirării (LL/AA)</label>
+          <input type="text" id="expDate" placeholder="LL/AA" />
+
+          <label for="securityCode">Cod de securitate</label>
+          <input type="text" id="securityCode" placeholder="CVV" />
+
+          <label for="cardName">Numele de pe card</label>
+          <input type="text" id="cardName" placeholder="Numele de pe card" />
+        </div>
+
+        <!-- Buton de plată (poți adapta acțiunea) -->
+        <button type="submit" class="pay-btn">Plătește acum</button>
+      </form>
+    </div>
+
+    <!-- Coloana dreaptă: sumarul comenzii (produse din localStorage) -->
+    <div class="checkout-right">
+      <h3>Sumar Comandă</h3>
+      <div class="order-summary">
+        <div class="cart-items" id="cartItems"></div>
+        <div class="total-amount">
+          <span>Total:</span>
+          <span id="cartTotal">0 Lei</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Citește produsele din localStorage
+    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+    // Elemente din DOM
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotalElement = document.getElementById('cartTotal');
+    
+    // Funcție pentru afișarea produselor în secțiunea "Sumar Comandă"
+    function displayCartItems() {
+      cartItemsContainer.innerHTML = "";
+      let total = 0;
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Coșul tău este gol.</p>";
+        cartTotalElement.textContent = "0 Lei";
+        return;
+      }
+
+      cart.forEach((product, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('cart-item');
+
+        // Preț convertit la float și adunat la total
+        const priceNumber = parseFloat(product.price) || 0;
+        total += priceNumber;
+
+        itemDiv.innerHTML = `
+          <img src="${product.image}" alt="${product.title}">
+          <div class="item-details">
+            <span class="item-title">${product.title}</span>
+            <span class="item-price">Preț: ${priceNumber.toLocaleString('ro-RO')} Lei</span>
+            <span class="item-monthly">${product.monthly || ""}</span>
+          </div>
+          <button class="item-remove" onclick="removeItem(${index})">Șterge</button>
+        `;
+        cartItemsContainer.appendChild(itemDiv);
+      });
+
+      cartTotalElement.textContent = total.toLocaleString('ro-RO') + " Lei";
+    }
+
+    // Șterge un produs din array și actualizează afișarea
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      displayCartItems();
+    }
+
+    // Apelăm funcția de afișare la încărcarea paginii
+    displayCartItems();
+
+    // Funcție care afișează/ascunde chenarul pentru card
+    function toggleCardFields() {
+      const cardRadio = document.querySelector('input[name="paymentMethod"][value="card"]');
+      const cardFields = document.getElementById('cardFields');
+      if (cardRadio.checked) {
+        cardFields.style.display = "block";
+      } else {
+        cardFields.style.display = "none";
+      }
+    }
+
+    // Rulează funcția la încărcarea paginii (dacă "card" este by default selectat)
+    toggleCardFields();
+
+    // Când se trimite formularul (poți adapta logica)
+    const checkoutForm = document.getElementById('checkoutForm');
+    checkoutForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Comanda a fost trimisă! (exemplu)");
+      // Aici poți implementa logica finală de plată / trimitere date
+    });
+  </script>
+</body>
+</html>
