@@ -137,14 +137,14 @@
       font-size: 1.2rem;
     }
 
-    /* Secțiunea Coș de Cumpărături (stil actualizat) */
+    /* Secțiunea Coș de Cumpărături */
     .shopping-cart-section {
       margin: 100px auto 80px;
-      max-width: 600px;            /* mai lat */
+      max-width: 600px;
       padding: 30px;
-      background-color: #111;      /* fundal închis */
-      color: #fff;                 /* text alb */
-      border-radius: 4px;          /* colțuri mai puțin rotunjite */
+      background-color: #111;
+      color: #fff;
+      border-radius: 4px;
       box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
       text-align: center;
     }
@@ -152,20 +152,36 @@
       margin-bottom: 20px;
     }
     .cart-container {
-      border: 1px solid #444;      
-      border-radius: 4px;         /* colțuri dreptunghiulare */
+      border: 1px solid #444;
+      border-radius: 4px;
       padding: 20px;
-      background-color: #000;     
+      background-color: #000;
       min-height: 200px;
     }
     .cart-container p {
       color: #fff;
     }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+    .cart-item img {
+      width: 80px;
+      height: auto;
+      margin-right: 15px;
+    }
+    .cart-item-details p {
+      margin: 4px 0;
+    }
     .cart-actions {
       margin-top: 20px;
     }
     .cart-actions button {
-      background-color: #ffdf00;   /* buton galben */
+      background-color: #ffdf00;
       color: #000;
       border: none;
       padding: 12px 20px;
@@ -269,14 +285,18 @@
     @media (max-width: 768px) {
       .top-bar {
         position: fixed;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 1100;
         height: 40px;
         line-height: 40px;
       }
       nav.navbar {
         position: fixed;
-        top: 40px; left: 0; right: 0;
+        top: 40px;
+        left: 0;
+        right: 0;
         z-index: 1000;
       }
       #menu {
@@ -324,21 +344,18 @@
       <li><a href="ceasuri.html">CEASURI</a></li>
     </ul>
     <div class="nav-icons">
-      <!-- Iconița de căutare -->
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="M21 21l-4.3-4.3"></path>
         </svg>
       </a>
-      <!-- Iconița pentru cont (login) -->
       <a href="login.html" aria-label="Contul meu">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="7" r="4"></circle>
           <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
         </svg>
       </a>
-      <!-- Iconița pentru coș (cos.html) -->
       <a href="cos.html" aria-label="Coș de cumpărături">
         <svg viewBox="0 0 24 24">
           <path d="M6 2v4"></path>
@@ -364,8 +381,7 @@
   <section class="shopping-cart-section">
     <h2>Coș de Cumpărături</h2>
     <div class="cart-container" id="cartContainer">
-      <!-- Mesaj afișat dacă nu există produse în coș -->
-      <p id="emptyMessage">Coșul tău este gol</p>
+      <!-- Aici vor fi încărcate produsele din localStorage -->
     </div>
     <div class="cart-actions">
       <button onclick="finalizeazaComanda()">Finalizează Comanda</button>
@@ -375,13 +391,10 @@
   <!-- Subsol (Footer) -->
   <footer>
     <div class="footer-row">
-      <!-- Partea stângă: imagini ANPC și Autenticitate, poziționate în colțul stânga jos -->
       <div class="footer-left">
         <img src="anpc.jpg" alt="ANPC" />
         <img src="original.jpg" alt="Autenticitate" />
       </div>
-      
-      <!-- Partea centrală: text și carduri de plată, centrate -->
       <div class="footer-center">
         <p>DLE-MarketPlace-2025-Toate drepturile rezervate</p>
         <div class="payment-cards">
@@ -392,8 +405,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Bula WhatsApp -->
     <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
       Salut, ne poți contacta aici!
       <img src="whatapp.jpg" alt="WhatsApp">
@@ -402,13 +413,11 @@
 
   <!-- Scripturi JS -->
   <script>
-    // Meniu mobil (hamburger)
+    // Funcții pentru meniul mobil și bara de căutare
     function toggleMenu() {
       var menu = document.getElementById("menu");
       menu.classList.toggle("show");
     }
-
-    // Funcții pentru bara de căutare
     function toggleSearch() {
       document.querySelector('.navbar').style.display = 'none';
       document.getElementById('searchOverlay').style.display = 'flex';
@@ -418,20 +427,48 @@
       document.getElementById('searchOverlay').style.display = 'none';
     }
 
-    // Funcții pentru coșul de cumpărături
-    function removeFromCart(button) {
-      var item = button.parentElement;
-      item.remove();
-      // Dacă nu mai există alte elemente în coș, arată mesajul "Coșul tău este gol"
-      const cartContainer = document.getElementById('cartContainer');
-      if (cartContainer.children.length === 0) {
+    // Funcția pentru încărcarea produselor din coș (localStorage)
+    function loadCart() {
+      var cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      var cartContainer = document.getElementById('cartContainer');
+      cartContainer.innerHTML = "";
+      if (cart.length === 0) {
         cartContainer.innerHTML = '<p id="emptyMessage">Coșul tău este gol</p>';
+      } else {
+        cart.forEach(function(item, index) {
+          var div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.image}" alt="${item.title}" />
+            <div class="cart-item-details">
+              <p>${item.title}</p>
+              <p>Preț: ${parseFloat(item.price).toLocaleString('ro-RO')} lei</p>
+              <p>${item.monthly}</p>
+            </div>
+            <button onclick="removeFromCart(${index})">Șterge</button>
+          `;
+          cartContainer.appendChild(div);
+        });
       }
     }
+
+    // Funcția de ștergere a unui produs din coș
+    function removeFromCart(index) {
+      var cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      loadCart();
+    }
+
     function finalizeazaComanda() {
       alert("Comanda a fost finalizată!");
+      // Opțional: goliți coșul după finalizare
+      // localStorage.removeItem('cartItems');
+      // loadCart();
     }
+
+    // Apelăm funcția de încărcare la deschiderea paginii
+    loadCart();
   </script>
 </body>
 </html>
-
