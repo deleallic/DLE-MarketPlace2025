@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -127,6 +128,59 @@
       cursor: pointer;
       font-size: 1.2rem;
     }
+
+    /* =========================================
+       NOUL CARUSEL SUB NAVBAR
+       ========================================= */
+    .hero-carousel {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      /* poți ajusta înălțimea după preferință, ex. 600px */
+      height: 600px;
+      margin-top: 0;
+    }
+    .hero-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 100%;
+    }
+    .hero-item {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+    .hero-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* umple spațiul pe toată lățimea și înălțimea */
+      display: block;
+    }
+    .hero-arrows {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+    .hero-arrows span {
+      cursor: pointer;
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 10px;
+      font-size: 24px;
+      user-select: none;
+    }
+    @media (max-width: 768px) {
+      .hero-carousel {
+        height: 400px; /* mai mic pe mobil, dacă dorești */
+      }
+      .hero-arrows span {
+        font-size: 20px;
+        padding: 8px;
+      }
+    }
+
     /* =========================================
        SECTIUNEA TELEFOANE
        ========================================= */
@@ -142,7 +196,6 @@
       text-transform: uppercase;
       text-align: center;
     }
-    /* Zona de filtrare (fără butonul "Filtru") */
     .filter-row {
       display: flex;
       align-items: center;
@@ -173,7 +226,6 @@
       align-items: center;
       gap: 5px;
     }
-    /* Grid produse */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -220,7 +272,7 @@
       color: #bbb;
     }
     /* =========================================
-       SECȚIUNEA "Adaugă Anunț" - formularul este vizibil din start
+       SECȚIUNEA "Adaugă Anunț"
        ========================================= */
     .add-announcement {
       background-color: #222;
@@ -326,7 +378,7 @@
       }
     }
     /* =========================================
-       Subsol (Footer) - păstrează aranjarea originală
+       Subsol (Footer)
        ========================================= */
     footer {
       background-color: #222;
@@ -414,6 +466,11 @@
       height: 24px;
       margin-left: 8px;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -468,6 +525,28 @@
       <span class="close-search" onclick="closeSearch()">X</span>
     </div>
   </div>
+
+  <!-- NOUL CARUSEL SUB NAVBAR -->
+  <section class="hero-carousel">
+    <div class="hero-track" id="heroTrack">
+      <div class="hero-item">
+        <img src="16promax11.jpg" alt="Imagine 1" />
+      </div>
+      <div class="hero-item">
+        <img src="16promax11.jpg" alt="Imagine 2" />
+      </div>
+      <div class="hero-item">
+        <img src="16promax11.jpg" alt="Imagine 3" />
+      </div>
+      <div class="hero-item">
+        <img src="16promax11.jpg" alt="Imagine 4" />
+      </div>
+    </div>
+    <div class="hero-arrows">
+      <span class="hero-prev">&#10094;</span>
+      <span class="hero-next">&#10095;</span>
+    </div>
+  </section>
 
   <!-- SECȚIUNEA TELEFOANE -->
   <section class="telefoane-section">
@@ -610,7 +689,31 @@
       document.querySelector('.navbar').style.display = 'grid';
       document.getElementById('searchOverlay').style.display = 'none';
     }
-    
+
+    // Carusel sub navbar
+    const heroTrack = document.getElementById('heroTrack');
+    const heroItems = Array.from(heroTrack.children);
+    const prevArrow = document.querySelector('.hero-prev');
+    const nextArrow = document.querySelector('.hero-next');
+    let currentSlideIndex = 0;
+
+    function updateCarousel() {
+      const slideWidth = heroItems[0].getBoundingClientRect().width;
+      heroTrack.style.transform = 'translateX(' + (-slideWidth * currentSlideIndex) + 'px)';
+    }
+
+    nextArrow.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex + 1) % heroItems.length;
+      updateCarousel();
+    });
+
+    prevArrow.addEventListener('click', () => {
+      currentSlideIndex = (currentSlideIndex - 1 + heroItems.length) % heroItems.length;
+      updateCarousel();
+    });
+
+    window.addEventListener('resize', updateCarousel);
+
     // Funcționalitatea de search
     document.getElementById('searchInput').addEventListener('input', function() {
       var query = this.value.toLowerCase().trim();
@@ -620,7 +723,7 @@
         card.style.display = title.includes(query) ? "" : "none";
       });
     });
-    
+
     // Funcționalitatea selectului de filtrare
     var filterSelect = document.getElementById('filterSelect');
     var priceOptions = document.getElementById('priceOptions');
@@ -635,47 +738,46 @@
     });
     document.getElementById('priceOrder').addEventListener('change', filterProducts);
     document.getElementById('priceRange').addEventListener('change', filterProducts);
-    
+
     function filterProducts() {
       var order = document.getElementById('priceOrder').value;
       var range = document.getElementById('priceRange').value;
       var productsGrid = document.getElementById('productsGrid');
       var productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
-      
+
       var minPrice = 0, maxPrice = Infinity;
       if (range !== "all") {
         var parts = range.split("-");
         minPrice = parseFloat(parts[0]);
         maxPrice = parseFloat(parts[1]);
       }
-      
+
       var filtered = productCards.filter(function(card) {
         var price = parseFloat(card.getAttribute('data-price'));
         return price >= minPrice && price <= maxPrice;
       });
-      
+
       filtered.sort(function(a, b) {
         var priceA = parseFloat(a.getAttribute('data-price'));
         var priceB = parseFloat(b.getAttribute('data-price'));
         return order === "asc" ? priceA - priceB : priceB - priceA;
       });
-      
+
       productsGrid.innerHTML = "";
       filtered.forEach(function(card) {
         productsGrid.appendChild(card);
       });
     }
-    
+
     // Funcționalitatea de adăugare a anunțului
     document.getElementById('addAnnouncementForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      
       var title = document.getElementById('prodTitle').value;
       var imgUrl = document.getElementById('prodImg').value;
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
       var rating = document.getElementById('prodRating').value;
-      
+
       var newCard = document.createElement('a');
       newCard.href = "#";
       newCard.className = "product-card";
@@ -687,7 +789,7 @@
         <div class="price">${parseFloat(price).toLocaleString('ro-RO')} lei</div>
         <div class="monthly">de la ${monthly} lei/lună</div>
       `;
-      
+
       document.getElementById('productsGrid').appendChild(newCard);
       this.reset();
     });
