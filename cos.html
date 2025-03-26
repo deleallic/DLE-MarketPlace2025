@@ -460,8 +460,9 @@
       loadCart();
     }
 
+    // Funcția pentru finalizarea comenzii cu redirecționare către finalizare.html
     function finalizeazaComanda() {
-      alert("Comanda a fost finalizată!");
+      window.location.href = "finalizare.html";
       // Opțional: goliți coșul după finalizare
       // localStorage.removeItem('cartItems');
       // loadCart();
@@ -472,3 +473,4 @@
   </script>
 </body>
 </html>
+
