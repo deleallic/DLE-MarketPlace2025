@@ -12,14 +12,12 @@
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
-
     /* Fundal general închis */
     body {
       background-color: #000;
       color: #fff;
       margin: 0;
     }
-
     /* Container principal */
     .checkout-container {
       display: flex;
@@ -29,8 +27,7 @@
       padding: 20px;
       gap: 20px;
     }
-
-    /* Coloana stângă (date de livrare, metode de livrare, metode de plată) */
+    /* Coloana stângă (date de livrare, metode de livrare, plată) */
     .checkout-left {
       flex: 1 1 60%;
       background-color: #111;
@@ -38,7 +35,6 @@
       padding: 20px;
       min-width: 300px;
     }
-
     /* Coloana dreaptă (sumarul comenzii) */
     .checkout-right {
       flex: 1 1 35%;
@@ -48,7 +44,6 @@
       min-width: 280px;
       height: fit-content;
     }
-
     h2, h3 {
       margin-bottom: 15px;
       font-weight: bold;
@@ -61,7 +56,6 @@
       border-bottom: 1px solid #333;
       padding-bottom: 10px;
     }
-
     /* Formulare */
     form {
       display: flex;
@@ -88,7 +82,6 @@
     textarea::placeholder {
       color: #666;
     }
-
     /* Secțiunile de livrare și plată */
     .section-block {
       margin-bottom: 20px;
@@ -118,8 +111,7 @@
       width: 16px;
       height: 16px;
     }
-
-    /* -- NOU: stiluri pentru chenarul cardului -- */
+    /* Stiluri pentru chenarul cardului */
     .card-fields {
       margin-top: 10px;
       background-color: #222;
@@ -138,7 +130,6 @@
       margin-bottom: 5px;
       width: 100%;
     }
-
     /* Butonul de Plătește */
     .pay-btn {
       background-color: #ffdf00;
@@ -153,7 +144,6 @@
     .pay-btn:hover {
       background-color: #e5c900;
     }
-
     /* Sumar Comandă (coloana dreaptă) */
     .order-summary {
       display: flex;
@@ -212,7 +202,6 @@
       padding-top: 10px;
       border-top: 1px solid #333;
     }
-
     /* Responsivitate pentru ecrane mai mici */
     @media (max-width: 768px) {
       .checkout-container {
@@ -236,9 +225,8 @@
   </style>
 </head>
 <body>
-  <!-- Container principal (poți adăuga un header / nav dacă dorești) -->
   <div class="checkout-container">
-    <!-- Coloana stângă: date de livrare, metode de livrare, plată -->
+    <!-- Coloana stângă: Date de livrare, metode de livrare, plată -->
     <div class="checkout-left">
       <h2>Finalizare Comandă</h2>
       <form id="checkoutForm">
@@ -246,28 +234,22 @@
         <div class="section-block">
           <h4>Date de contact</h4>
           <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" placeholder="ex: nume@domeniu.com" required />
-
+          <input type="email" id="email" name="email" placeholder="ex: nume@domeniu.com" required>
           <label for="phone">Telefon</label>
-          <input type="tel" id="phone" name="phone" placeholder="ex: 07xx xxx xxx" required />
+          <input type="tel" id="phone" name="phone" placeholder="ex: 07xx xxx xxx" required>
         </div>
-
         <!-- 2. Adresă de livrare -->
         <div class="section-block">
           <h4>Adresă de livrare</h4>
           <label for="nume">Nume și Prenume</label>
-          <input type="text" id="nume" name="nume" placeholder="ex: Popescu Andrei" required />
-
+          <input type="text" id="nume" name="nume" placeholder="ex: Popescu Andrei" required>
           <label for="address">Adresă</label>
-          <input type="text" id="address" name="address" placeholder="Stradă, nr. bloc, apartament" required />
-
+          <input type="text" id="address" name="address" placeholder="Stradă, nr. bloc, apartament" required>
           <label for="city">Oraș</label>
-          <input type="text" id="city" name="city" placeholder="ex: București" required />
-
+          <input type="text" id="city" name="city" placeholder="ex: București" required>
           <label for="county">Județ/Sector</label>
-          <input type="text" id="county" name="county" placeholder="ex: Sector 1 / Ilfov" required />
+          <input type="text" id="county" name="county" placeholder="ex: Sector 1 / Ilfov" required>
         </div>
-
         <!-- 3. Metodă de livrare -->
         <div class="section-block">
           <h4>Metodă de livrare</h4>
@@ -276,46 +258,37 @@
             <option value="posta">Poșta Română (3-5 zile)</option>
           </select>
         </div>
-
         <!-- 4. Metodă de plată -->
         <div class="section-block">
           <h4>Metodă de plată</h4>
           <div class="payment-options">
-            <!-- Card -->
             <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="card" checked onclick="toggleCardFields()" />
+              <input type="radio" name="paymentMethod" value="card" checked onclick="toggleCardFields()">
               <span>Card</span>
             </label>
-            <!-- Ramburs -->
             <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="ramburs" onclick="toggleCardFields()" />
+              <input type="radio" name="paymentMethod" value="ramburs" onclick="toggleCardFields()">
               <span>Ramburs</span>
             </label>
-            <!-- PayPal a fost eliminat -->
           </div>
         </div>
-
         <!-- Chenar cu câmpuri pentru card -->
         <div class="card-fields" id="cardFields">
           <label for="cardNumber">Numărul de card</label>
-          <input type="text" id="cardNumber" placeholder="Numărul de card" />
-
+          <input type="text" id="cardNumber" placeholder="Numărul de card">
           <label for="expDate">Data expirării (LL/AA)</label>
-          <input type="text" id="expDate" placeholder="LL/AA" />
-
+          <input type="text" id="expDate" placeholder="LL/AA">
           <label for="securityCode">Cod de securitate</label>
-          <input type="text" id="securityCode" placeholder="CVV" />
-
+          <input type="text" id="securityCode" placeholder="CVV">
           <label for="cardName">Numele de pe card</label>
-          <input type="text" id="cardName" placeholder="Numele de pe card" />
+          <input type="text" id="cardName" placeholder="Numele de pe card">
         </div>
-
-        <!-- Buton de plată (poți adapta acțiunea) -->
+        <!-- Butonul de plată -->
         <button type="submit" class="pay-btn">Plătește acum</button>
       </form>
     </div>
 
-    <!-- Coloana dreaptă: sumarul comenzii (produse din localStorage) -->
+    <!-- Coloana dreaptă: Sumar Comandă -->
     <div class="checkout-right">
       <h3>Sumar Comandă</h3>
       <div class="order-summary">
@@ -331,30 +304,23 @@
   <script>
     // Citește produsele din localStorage
     let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-    // Elemente din DOM
     const cartItemsContainer = document.getElementById('cartItems');
     const cartTotalElement = document.getElementById('cartTotal');
-    
+
     // Funcție pentru afișarea produselor în secțiunea "Sumar Comandă"
     function displayCartItems() {
       cartItemsContainer.innerHTML = "";
       let total = 0;
-      
       if (cart.length === 0) {
         cartItemsContainer.innerHTML = "<p>Coșul tău este gol.</p>";
         cartTotalElement.textContent = "0 Lei";
         return;
       }
-
       cart.forEach((product, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('cart-item');
-
-        // Preț convertit la float și adunat la total
         const priceNumber = parseFloat(product.price) || 0;
         total += priceNumber;
-
         itemDiv.innerHTML = `
           <img src="${product.image}" alt="${product.title}">
           <div class="item-details">
@@ -366,18 +332,17 @@
         `;
         cartItemsContainer.appendChild(itemDiv);
       });
-
       cartTotalElement.textContent = total.toLocaleString('ro-RO') + " Lei";
     }
 
-    // Șterge un produs din array și actualizează afișarea
+    // Funcție pentru ștergerea unui produs
     function removeItem(index) {
       cart.splice(index, 1);
       localStorage.setItem('cartItems', JSON.stringify(cart));
       displayCartItems();
     }
 
-    // Apelăm funcția de afișare la încărcarea paginii
+    // Afișăm produsele la încărcarea paginii
     displayCartItems();
 
     // Funcție care afișează/ascunde chenarul pentru card
@@ -390,16 +355,48 @@
         cardFields.style.display = "none";
       }
     }
-
-    // Rulează funcția la încărcarea paginii (dacă "card" este by default selectat)
     toggleCardFields();
 
-    // Când se trimite formularul (poți adapta logica)
+    // La submit, salvăm comanda în istoricul comenzilor și sincronizăm cu contul logat
     const checkoutForm = document.getElementById('checkoutForm');
     checkoutForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      alert("Comanda a fost trimisă! (exemplu)");
-      // Aici poți implementa logica finală de plată / trimitere date
+
+      // Calculăm totalul comenzii
+      let total = 0;
+      cart.forEach(product => {
+        total += parseFloat(product.price) || 0;
+      });
+
+      // Obținem utilizatorul logat (dacă există)
+      const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+
+      // Creăm un obiect pentru comanda curentă
+      const newOrder = {
+        orderId: Date.now(), // Generare simplă de ID
+        orderDate: new Date().toISOString(),
+        items: cart,
+        total: total.toLocaleString('ro-RO') + " Lei",
+        // Sincronizăm comanda cu contul logat, dacă există
+        userEmail: loggedUser ? loggedUser.email : null,
+        // Salvăm și titlurile produselor pentru afișare rapidă
+        products: cart.map(product => product.title)
+      };
+
+      // Citim comenzile existente sau inițializăm un array nou
+      let orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push(newOrder);
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      // Golește coșul și actualizează afișarea
+      cart = [];
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      displayCartItems();
+
+      alert("Comanda a fost plasată și salvată în istoricul comenzilor!");
+
+      // Opțional: redirecționează utilizatorul către pagina contului (ex: login.html)
+      // window.location.href = "login.html";
     });
   </script>
 </body>
