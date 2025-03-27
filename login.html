@@ -146,11 +146,12 @@
       color: #fff;
       margin-bottom: 20px;
     }
-    /* Containerele pentru formulare, welcome și orders */
+    /* Containerele pentru formulare, welcome și istoricul comenzilor */
     .login-container, .register-container, .welcome-container, .orders-container {
       background-color: #111;
       padding: 30px;
       border-radius: 8px;
+      margin-bottom: 20px;
     }
     .login-container form,
     .register-container form {
@@ -195,33 +196,46 @@
       margin-bottom: 10px;
       font-size: 0.85rem;
     }
-    /* Inițial ascundem formularele de înregistrare, welcome și orders */
+    /* Inițial ascundem formularele de înregistrare, welcome și istoricul comenzilor */
     #registerContainer, #welcomeContainer, #ordersContainer {
       display: none;
     }
-    /* Stilizare container Welcome */
-    .welcome-container h1 {
-      text-align: center;
-      color: #fff;
-      margin-bottom: 20px;
-    }
-    /* Stilizare container Istoricul comenzilor */
-    .orders-container {
-      margin-top: 20px;
-    }
+
+    /* -- STILIZARE NOUĂ pentru istoricul comenzilor -- */
     .orders-container h2 {
       text-align: center;
       color: #fff;
       margin-bottom: 20px;
     }
-    .orders-container ul {
-      list-style-type: none;
-      color: #fff;
-      padding-left: 20px;
+    /* Container pentru fiecare comandă */
+    .order {
+      border-bottom: 1px solid #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
     }
-    .orders-container li {
+    .order h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .order-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 10px;
     }
+    .order-item img {
+      width: 60px;
+      height: auto;
+      border-radius: 4px;
+    }
+    .item-title {
+      font-weight: bold;
+    }
+    .item-price {
+      color: #fff;
+    }
+
     /* Subsol */
     footer {
       background-color: #222;
@@ -381,7 +395,7 @@
     </div>
   </div>
 
-  <!-- Secțiunea de autentificare / înregistrare / welcome / istoricul comenzilor -->
+  <!-- Secțiunea de autentificare / înregistrare / welcome și istoricul comenzilor -->
   <section class="login-section">
     <div class="form-container">
       <!-- Formular Login -->
@@ -409,18 +423,16 @@
         </form>
       </div>
 
-      <!-- Container Welcome -->
+      <!-- Container Welcome și Istoricul comenzilor -->
       <div class="welcome-container" id="welcomeContainer">
         <h1>Bine ai venit, <span id="userNameDisplay"></span>!</h1>
         <button onclick="logout()">Delogare</button>
       </div>
 
-      <!-- Container Istoricul comenzilor (apare doar dacă există comenzi salvate) -->
       <div class="orders-container" id="ordersContainer">
         <h2>Istoricul comenzilor</h2>
-        <ul id="ordersList">
-          <!-- Nu se afișează nimic dacă nu există comenzi -->
-        </ul>
+        <!-- Aici vom crea blocuri .order pentru fiecare comandă -->
+        <div id="ordersList"></div>
       </div>
     </div>
   </section>
@@ -474,33 +486,58 @@
       document.getElementById('registerContainer').style.display = 'none';
     }
 
-    // Actualizează istoricul comenzilor (afișează lista doar dacă există comenzi salvate)
-    function updateOrders() {
-      let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      const ordersList = document.getElementById('ordersList');
-      ordersList.innerHTML = "";
-      orders.forEach(function(order) {
-        let li = document.createElement("li");
-        li.innerHTML = `<strong>Comanda #${order.orderId}</strong> - ${order.date} - Total: ${order.total}<br>Produse: ${order.products.join(", ")}`;
-        ordersList.appendChild(li);
-      });
-    }
-
-    // Afișează containerul Welcome și, dacă există comenzi, containerul istoricului comenzilor
+    // Afișează containerul Welcome și actualizează istoricul comenzilor pentru utilizatorul logat
     function showWelcome(user) {
       document.getElementById('loginContainer').style.display = 'none';
       document.getElementById('registerContainer').style.display = 'none';
       document.getElementById('welcomeContainer').style.display = 'block';
       document.getElementById('userNameDisplay').textContent = user.name;
-      
-      // Dacă există comenzi salvate, afișăm și containerul istoricului comenzilor; altfel rămâne ascuns.
+      updateOrders(user);
+    }
+
+    // Actualizează istoricul comenzilor pentru contul logat
+    function updateOrders(user) {
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      if (orders.length > 0) {
-         document.getElementById('ordersContainer').style.display = 'block';
-         updateOrders();
+      // Filtrăm comenzile după e-mailul utilizatorului logat
+      let userOrders = orders.filter(order => order.userEmail === user.email);
+      const ordersList = document.getElementById('ordersList');
+      ordersList.innerHTML = "";
+
+      if (userOrders.length === 0) {
+        ordersList.innerHTML = "<p>Nu există comenzi pentru acest cont.</p>";
       } else {
-         document.getElementById('ordersContainer').style.display = 'none';
+        userOrders.forEach(function(order) {
+          // Creăm un div pentru fiecare comandă
+          const orderDiv = document.createElement('div');
+          orderDiv.classList.add('order');
+
+          // Formatăm data comenzii
+          const dateObj = new Date(order.orderDate);
+          const orderDateString = dateObj.toLocaleString('ro-RO');
+
+          // Antetul comenzii
+          orderDiv.innerHTML = `
+            <h3>Comandă plasată pe: ${orderDateString}</h3>
+          `;
+
+          // Dacă avem array-ul `items`, îl afișăm
+          if (Array.isArray(order.items)) {
+            order.items.forEach(item => {
+              const itemDiv = document.createElement('div');
+              itemDiv.classList.add('order-item');
+              itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div class="item-title">${item.title}</div>
+                <div class="item-price">${parseFloat(item.price).toLocaleString('ro-RO')} Lei</div>
+              `;
+              orderDiv.appendChild(itemDiv);
+            });
+          }
+
+          ordersList.appendChild(orderDiv);
+        });
       }
+      document.getElementById('ordersContainer').style.display = 'block';
     }
 
     // Delogare: șterge utilizatorul logat și revine la formularul de login
@@ -516,7 +553,7 @@
       const registerForm = document.getElementById('registerForm');
       const loginForm = document.getElementById('loginForm');
 
-      // Dacă există un utilizator logat, afișăm containerul Welcome și istoricul comenzilor (dacă există)
+      // Dacă există un utilizator logat, afișăm containerul Welcome și istoricul comenzilor
       let loggedUser = localStorage.getItem('loggedUser');
       if (loggedUser) {
          loggedUser = JSON.parse(loggedUser);
@@ -566,3 +603,4 @@
   </script>
 </body>
 </html>
+
