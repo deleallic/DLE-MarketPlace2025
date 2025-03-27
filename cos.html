@@ -443,7 +443,7 @@
             <div class="cart-item-details">
               <p>${item.title}</p>
               <p>Preț: ${parseFloat(item.price).toLocaleString('ro-RO')} lei</p>
-              <p>${item.monthly}</p>
+              <p>${item.monthly || ""}</p>
             </div>
             <button onclick="removeFromCart(${index})">Șterge</button>
           `;
@@ -463,9 +463,6 @@
     // Funcția pentru finalizarea comenzii cu redirecționare către finalizare.html
     function finalizeazaComanda() {
       window.location.href = "finalizare.html";
-      // Opțional: goliți coșul după finalizare
-      // localStorage.removeItem('cartItems');
-      // loadCart();
     }
 
     // Apelăm funcția de încărcare la deschiderea paginii
