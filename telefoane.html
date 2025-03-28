@@ -202,9 +202,6 @@
       align-items: center;
       gap: 5px;
     }
-    .filter-right {
-      font-size: 0.95rem;
-    }
     .filter-center select {
       background-color: #fff;
       color: #000;
@@ -213,10 +210,8 @@
       font-size: 0.95rem;
       cursor: pointer;
     }
-    .price-options {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+    .filter-right {
+      font-size: 0.95rem;
     }
     .products-grid {
       display: grid;
@@ -248,11 +243,6 @@
       font-size: 1rem;
       margin-bottom: 5px;
       text-transform: uppercase;
-    }
-    .rating {
-      color: #ffdf00;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
     }
     .price {
       font-size: 1.1rem;
@@ -355,12 +345,6 @@
         align-items: flex-start;
       }
       .filter-center select {
-        width: 100%;
-        margin-top: 5px;
-      }
-      .price-options {
-        flex-direction: column;
-        align-items: flex-start;
         width: 100%;
         margin-top: 5px;
       }
@@ -552,25 +536,21 @@
   <section class="telefoane-section">
     <h1>TELEFOANE</h1>
 
-    <!-- Zona de filtrare -->
+    <!-- Zona de filtrare: filtrare după brand și sortare după preț -->
     <div class="filter-row">
       <div class="filter-center">
         Filtrare după:
-        <select id="filterSelect">
-          <option value="Recomandate">Recomandate</option>
-          <option value="Pret">Preț</option>
+        <select id="brandSelect">
+          <option value="all">Toate</option>
+          <option value="iPhone">iPhone</option>
+          <option value="Samsung">Samsung</option>
+          <option value="Xiaomi">Xiaomi</option>
+          <option value="Google">Google</option>
         </select>
-        <span class="price-options" id="priceOptions">
-          <select id="priceOrder">
-            <option value="asc">Preț Crescător</option>
-            <option value="desc">Preț Descrescător</option>
-          </select>
-          <select id="priceRange">
-            <option value="all">Toate</option>
-            <option value="0-3000">0 - 3000 lei</option>
-            <option value="3000-6000">3000 - 6000 lei</option>
-          </select>
-        </span>
+        <select id="priceOrder">
+          <option value="asc">Preț Crescător</option>
+          <option value="desc">Preț Descrescător</option>
+        </select>
       </div>
       <div class="filter-right">
         4 produse
@@ -580,12 +560,9 @@
     <!-- Grid cu produsele existente -->
     <div class="products-grid" id="productsGrid">
       <!-- Produs 1 -->
-      <a href="iphonedetali.html" class="product-card" data-price="5999">
+      <a href="iphonedetali.html" class="product-card" data-price="5999" data-brand="iPhone">
         <img src="16promaxfata.jpg" alt="iPhone 15 Pro">
         <h2>iPhone 15 Pro</h2>
-        <div class="rating">
-          ★★★★☆ (123 recenzii)
-        </div>
         <div class="price">
           5.999,00 lei
         </div>
@@ -595,12 +572,9 @@
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 2 -->
-      <a href="samsungS23.html" class="product-card" data-price="4499">
+      <a href="samsungS23.html" class="product-card" data-price="4499" data-brand="Samsung">
         <img src="s25ultra.jpg" alt="Samsung Galaxy S23">
         <h2>Samsung Galaxy S23</h2>
-        <div class="rating">
-          ★★★★★ (340 recenzii)
-        </div>
         <div class="price">
           4.499,00 lei
         </div>
@@ -610,12 +584,9 @@
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 3 -->
-      <a href="xiaomi13pro.html" class="product-card" data-price="3999">
+      <a href="xiaomi13pro.html" class="product-card" data-price="3999" data-brand="Xiaomi">
         <img src="pixel9fata.jpg" alt="Xiaomi 13 Pro">
         <h2>Xiaomi 13 Pro</h2>
-        <div class="rating">
-          ★★★★☆ (89 recenzii)
-        </div>
         <div class="price">
           3.999,00 lei
         </div>
@@ -625,12 +596,9 @@
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
       <!-- Produs 4 -->
-      <a href="googlepixel7.html" class="product-card" data-price="3299">
+      <a href="googlepixel7.html" class="product-card" data-price="3299" data-brand="Google">
         <img src="fold6.jpg" alt="Google Pixel 7">
         <h2>Google Pixel 7</h2>
-        <div class="rating">
-          ★★★★☆ (210 recenzii)
-        </div>
         <div class="price">
           3.299,00 lei
         </div>
@@ -724,40 +692,28 @@
       });
     });
 
-    // Funcționalitatea selectului de filtrare
-    var filterSelect = document.getElementById('filterSelect');
-    var priceOptions = document.getElementById('priceOptions');
-    filterSelect.addEventListener('change', function() {
-      if (this.value === "Pret") {
-        priceOptions.style.display = "inline-flex";
-        filterProducts();
-      } else {
-        priceOptions.style.display = "none";
-        location.reload();
-      }
-    });
+    // Stocăm toate produsele într-o variabilă globală pentru a filtra întotdeauna din lista completă
+    var allProductCards = Array.from(document.querySelectorAll('.products-grid .product-card'));
+
+    // Funcționalitatea de filtrare după brand și sortare după preț
+    document.getElementById('brandSelect').addEventListener('change', filterProducts);
     document.getElementById('priceOrder').addEventListener('change', filterProducts);
-    document.getElementById('priceRange').addEventListener('change', filterProducts);
     function filterProducts() {
+      var selectedBrand = document.getElementById('brandSelect').value;
       var order = document.getElementById('priceOrder').value;
-      var range = document.getElementById('priceRange').value;
       var productsGrid = document.getElementById('productsGrid');
-      var productCards = Array.from(productsGrid.getElementsByClassName('product-card'));
-      var minPrice = 0, maxPrice = Infinity;
-      if (range !== "all") {
-        var parts = range.split("-");
-        minPrice = parseFloat(parts[0]);
-        maxPrice = parseFloat(parts[1]);
-      }
-      var filtered = productCards.filter(function(card) {
-        var price = parseFloat(card.getAttribute('data-price'));
-        return price >= minPrice && price <= maxPrice;
+      
+      var filtered = allProductCards.filter(function(card) {
+        var cardBrand = card.getAttribute('data-brand');
+        return selectedBrand === "all" || cardBrand === selectedBrand;
       });
+      
       filtered.sort(function(a, b) {
         var priceA = parseFloat(a.getAttribute('data-price'));
         var priceB = parseFloat(b.getAttribute('data-price'));
         return order === "asc" ? priceA - priceB : priceB - priceA;
       });
+      
       productsGrid.innerHTML = "";
       filtered.forEach(function(card) {
         productsGrid.appendChild(card);
@@ -776,15 +732,19 @@
       newCard.href = "#";
       newCard.className = "product-card";
       newCard.setAttribute("data-price", price);
+      // Extragem brandul din titlu (primul cuvânt)
+      var brand = title.split(" ")[0];
+      newCard.setAttribute("data-brand", brand);
       newCard.innerHTML = `
         <img src="${imgUrl}" alt="${title}">
         <h2>${title}</h2>
-        <div class="rating">${rating}</div>
         <div class="price">${parseFloat(price).toLocaleString('ro-RO')} lei</div>
         <div class="monthly">de la ${monthly} lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       `;
       document.getElementById('productsGrid').appendChild(newCard);
+      // Adăugăm noul produs în lista globală pentru filtrări ulterioare
+      allProductCards.push(newCard);
       this.reset();
     });
 
