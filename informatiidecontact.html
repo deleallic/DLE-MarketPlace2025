@@ -94,9 +94,7 @@
     .search-overlay {
       display: none;
       position: fixed;
-      top: 0; 
-      left: 0; 
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 60px;
       background-color: #111;
       z-index: 2000;
@@ -310,11 +308,12 @@
       margin-left: 8px;
     }
     
+    /* Responsivitate mobil */
     @media (max-width: 768px) {
       .top-bar {
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 0; 
+        left: 0; 
         right: 0;
         z-index: 1100;
         height: 40px;
@@ -322,8 +321,8 @@
       }
       nav.navbar {
         position: fixed;
-        top: 40px;
-        left: 0;
+        top: 40px; 
+        left: 0; 
         right: 0;
         z-index: 1000;
       }
@@ -345,6 +344,10 @@
       }
       .menu-icon {
         display: inline-block;
+      }
+      /* Spațiu suplimentar pentru titlu */
+      .contact-section {
+        margin-top: 100px;
       }
     }
   </style>
@@ -370,6 +373,7 @@
       <li><a href="termeniiservici.html">TERMENII SERVICIULUI</a></li>
       <li><a href="livrare.html">LIVRARE</a></li>
       <li><a href="informatiidecontact.html">CONTACT</a></li>
+      <li><a href="aviz.html">AVIZ JURIDIC</a></li>
     </ul>
     <div class="nav-icons">
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
@@ -459,7 +463,7 @@
     </div>
   </section>
   
-  <!-- Subsol (Footer) -->
+  <!-- Footer -->
   <footer>
     <div class="footer-row">
       <div class="footer-left">
