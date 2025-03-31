@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace - Politica de livrare</title>
+
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    html, body {
+      background-color: #000;
+    }
+    
+    /* Bara de sus */
+    .top-bar {
+      background-color: #ffffff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    
+    /* Navbar cu gradient */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    
+    /* =========================================
+       SECȚIUNEA: POLITICA DE LIVRARE
+       ========================================= */
+    .livrare-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      color: #fff;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+    .livrare-section h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .livrare-section h3 {
+      font-size: 1.1rem;
+      margin-top: 25px;
+      font-weight: bold;
+    }
+    .livrare-section p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    
+    /* =========================================
+       SECȚIUNEA: POLITICI ȘI INFORMAȚII
+       ========================================= */
+    .info-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .info-item {
+      text-align: center;
+    }
+    .info-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .info-item img {
+      width: 100%;
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .info-item img:hover {
+      transform: scale(1.1);
+    }
+    .info-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+    
+    /* =========================================
+       Subsol (Footer)
+       ========================================= */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+    
+    @media (max-width: 768px) {
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1100;
+        height: 40px;
+        line-height: 40px;
+      }
+      nav.navbar {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      #menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #555454e0;
+        flex-direction: column;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .menu-icon {
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
+      <li><a href="confidentialitate.html">CONFIDENȚIALITATE</a></li>
+      <li><a href="termeniiservici.html">TERMENII SERVICIULUI</a></li>
+      <li><a href="livrare.html">LIVRARE</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+  
+  <!-- Overlay pentru căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+  
+  <!-- SECȚIUNEA: POLITICA DE LIVRARE -->
+  <section class="livrare-section">
+    <h2>Politica de livrare</h2>
+    <p>
+      Politica noastră de expediere este concepută pentru a se asigura că clienții noștri primesc comenzile în timp util și eficient, oferindu-le în același timp flexibilitatea și opțiunile de care au nevoie pentru a se potrivi nevoilor lor individuale.
+    </p>
+    
+    <h3>Metode de livrare și termene de livrare</h3>
+    <p>
+      Oferim o gamă largă de metode de expediere pentru a se potrivi nevoilor clienților noștri, inclusiv transport terestru standard, expediere rapidă și transport internațional. Termenele noastre de livrare variază în funcție de metoda de expediere aleasă și de destinația expedierii. Vă vom furniza o dată estimată de livrare în momentul plății, însă aceasta este doar o estimare și poate fi modificată din cauza unor circumstanțe neprevăzute, cum ar fi vremea sau întârzierile transportatorului.
+    </p>
+    
+    <h3>Prelucrare și procesare a comenzilor</h3>
+    <p>
+      Ne străduim să procesăm și să onorăm toate comenzile cât mai repede posibil, de obicei în 1-2 zile lucrătoare de la primire. Odată ce comanda dvs. este procesată, veți primi un e-mail de confirmare a expedierii cu informații de urmărire, care vă va permite să urmăriți coletul online și să fiți informat cu privire la progresul acestuia.
+    </p>
+    
+    <h3>Costuri de livrare</h3>
+    <p>
+      Costurile de transport variază în funcție de metoda de expediere aleasă, precum și de greutatea și dimensiunile coletului. Oferim tarife competitive de transport și ne străduim să menținem costurile cât mai mici, asigurând totodată o livrare fiabilă și la timp.
+    </p>
+    
+    <h3>Transport internațional</h3>
+    <p>
+      Oferim transport internațional în multe țări din întreaga lume. Vă rugăm să rețineți că tarifele de transport internațional pot fi mai mari decât cele interne și că se pot aplica taxe vamale sau alte costuri suplimentare. DLE-MarketPlace nu este responsabil pentru taxele sau costurile suplimentare asociate transporturilor internaționale.
+    </p>
+    
+    <h3>Restricții de expediere</h3>
+    <p>
+      Anumite produse pot fi supuse unor restricții de transport din cauza dimensiunii, greutății sau conținutului lor. Vom furniza informații despre orice restricții de expediere în momentul plății. Vă rugăm să rețineți că nu suntem responsabili pentru întârzierile sau costurile suplimentare cauzate de restricțiile de transport.
+    </p>
+    
+    <h3>Deteriorări de expediere și retururi</h3>
+    <p>
+      Avem mare grijă la ambalarea și expedierea produselor noastre pentru a ne asigura că acestea ajung în stare excelentă. Dacă pachetul dvs. este deteriorat în timpul transportului, vă rugăm să ne contactați imediat pentru a aranja o înlocuire sau o rambursare. Este posibil să solicităm dovezi fotografice ale daunei pentru a procesa reclamația.
+    </p>
+    
+    <h3>Probleme de livrare</h3>
+    <p>
+      Dacă pachetul dvs. este întârziat sau pierdut în tranzit, vă rugăm să ne contactați imediat pentru a iniția o investigație cu transportatorul. Vă rugăm să rețineți că DLE-MarketPlace nu este responsabil pentru pachetele care sunt pierdute sau furate după ce au fost livrate la adresa furnizată de client.
+    </p>
+  </section>
+  
+  <!-- SECȚIUNEA "POLITICI ȘI INFORMAȚII" -->
+  <section class="info-section">
+    <h2>POLITICI ȘI INFORMAȚII</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <a href="rambursare.html">
+          <img src="rambursare.png" alt="Politica de rambursare">
+          <p>Politica de rambursare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="confidentialitate.html">
+          <img src="confidentialitate.png" alt="Politica de confidențialitate">
+          <p>Politica de confidențialitate</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="termeniiservici.html">
+          <img src="termenii serviciului.png" alt="Termenii serviciului">
+          <p>Termenii serviciului</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="livrare.html">
+          <img src="politicalivrare.png" alt="Politica de livrare">
+          <p>Politica de livrare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="informatiidecontact.html">
+          <img src="informatiidecontact.png" alt="Informații de contact">
+          <p>Informații de contact</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="aviz.html">
+          <img src="avizjurutic.png" alt="Aviz juridic">
+          <p>Aviz juridic</p>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+  
+  <script>
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

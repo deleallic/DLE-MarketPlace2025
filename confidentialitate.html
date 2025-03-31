@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace - Politica de confidențialitate</title>
+
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Fundal negru */
+    html, body {
+      background-color: #000;
+    }
+
+    /* Bara de sus (transport gratuit) */
+    .top-bar {
+      background-color: #ffffff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    /* Bara de navigație cu gradient */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    /* Logo cu fade in */
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Meniul centrat */
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+
+    /* Icoanele + butonul hamburger */
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    /* =========================================
+       SECȚIUNEA: "POLITICA DE CONFIDENȚIALITATE"
+       ========================================= */
+    .confidentialitate-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      color: #fff;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+    .confidentialitate-section h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .confidentialitate-section h3 {
+      font-size: 1.1rem;
+      margin-top: 25px;
+      font-weight: bold;
+    }
+    .confidentialitate-section p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    .confidentialitate-section a {
+      color: #ffdf00;
+      text-decoration: none;
+    }
+    .confidentialitate-section a:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================================
+       SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
+       ========================================= */
+    .info-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .info-item {
+      text-align: center;
+    }
+    .info-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .info-item img {
+      width: 100%;
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .info-item img:hover {
+      transform: scale(1.1);
+    }
+    .info-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+
+    /* =========================================
+       Subsol (Footer)
+       ========================================= */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+
+    /* Responsivitate mobil */
+    @media (max-width: 768px) {
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1100;
+        height: 40px;
+        line-height: 40px;
+      }
+      nav.navbar {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      #menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #555454e0;
+        flex-direction: column;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .menu-icon {
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+
+  <!-- Bara de navigație -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
+      <li><a href="confidentialitate.html">CONFIDENȚIALITATE</a></li>
+    </ul>
+    <div class="nav-icons">
+      <!-- Iconița de căutare -->
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru cont (login) -->
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru coș (cos.html) -->
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+
+  <!-- Overlay pentru bara de căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+
+  <!-- SECȚIUNEA: POLITICA DE CONFIDENȚIALITATE -->
+  <section class="confidentialitate-section">
+    <h2>Politica de confidențialitate</h2>
+    <p>
+      Această Politică de confidențialitate descrie modul în care flashdetail.com („Site-ul” sau „noi”) colectează, utilizează și dezvăluie informațiile dumneavoastră personale atunci când vizitați sau faceți o achiziție de pe site.
+    </p>
+
+    <h3>A lua legătura</h3>
+    <p>
+      După examinarea acestei politici, dacă aveți întrebări suplimentare, doriți mai multe informații despre practicile noastre de confidențialitate sau doriți să faceți o reclamație, vă rugăm să ne contactați prin e-mail la <strong>tundicomertonline@gmail.com</strong> sau prin poștă folosind detaliile furnizate mai jos:
+    </p>
+    <p><strong>Arhimede 8, 410109 Oradea BH, România</strong></p>
+
+    <h3>Colectarea informațiilor personale</h3>
+    <p>
+      Când vizitați Site-ul, colectăm anumite informații despre dispozitivul dvs., interacțiunea dvs. cu Site-ul și informațiile necesare procesării achizițiilor dvs. De asemenea, putem colecta informații suplimentare dacă ne contactați pentru asistență pentru clienți. În această Politică de confidențialitate, ne referim la orice informație despre o persoană identificabilă (inclusiv informațiile de mai jos) ca „Informații personale”. Consultați lista de mai jos pentru mai multe informații despre informațiile personale pe care le colectăm și de ce.
+    </p>
+
+    <h3>Informații despre dispozitiv</h3>
+    <p>
+      <strong>Scopul colectării:</strong> pentru a încărca Site-ul cu acuratețe pentru dvs. și pentru a efectua analize privind utilizarea Site-ului pentru a optimiza Site-ul nostru.<br>
+      <strong>Sursa colectării:</strong> colectate automat atunci când accesați site-ul nostru folosind cookie-uri, fișiere jurnal, semnalizatoare web, etichete sau pixeli.<br>
+      <strong>Dezvăluire în scop comercial:</strong> împărtășită cu procesorul nostru Shopify.<br>
+      <strong>Informații personale colectate:</strong> versiunea browserului web, adresa IP, fusul orar, informații despre cookie-uri, ce site-uri sau produse vizualizați, termeni de căutare și modul în care interacționați cu Site-ul.
+    </p>
+
+    <h3>Informații despre comandă</h3>
+    <p>
+      <strong>Scopul colectării:</strong> pentru a vă furniza produse sau servicii, pentru a procesa informațiile dvs. de plată, pentru a aranja transportul și pentru a vă furniza facturi și/sau confirmări de comandă, pentru a comunica cu dvs., pentru a verifica comenzile în scopul identificării riscurilor sau fraudelor și, atunci când se potrivește cu preferințele dvs., pentru a vă oferi informații sau publicitate referitoare la produsele sau serviciile noastre.<br>
+      <strong>Sursa colectării:</strong> colectată de la dvs.<br>
+      <strong>Dezvăluire în scop comercial:</strong> împărtășită cu procesorul nostru Shopify.<br>
+      <strong>Informații personale colectate:</strong> nume, adresa de facturare, adresa de expediere, informații de plată (inclusiv numere de card de credit, adresa de e-mail și număr de telefon).
+    </p>
+
+    <h3>Informații de asistență pentru clienți</h3>
+    <p>
+      <strong>Scopul colectării:</strong> pentru a oferi asistență clienților.<br>
+      <strong>Sursa colectării:</strong> colectată de la dvs.<br>
+      <strong>Informații personale colectate:</strong> adresă.
+    </p>
+
+    <h3>Minorii</h3>
+    <p>
+      Site-ul nu este destinat persoanelor sub 18 ani. Nu colectăm în mod intenționat informații personale de la copii. Dacă sunteți părinte sau tutore și credeți că copilul dvs. ne-a furnizat informații personale, vă rugăm să ne contactați la adresa de mai sus pentru a solicita ștergerea.
+    </p>
+
+    <h3>Partajarea informațiilor personale</h3>
+    <p>
+      Împărtășim informațiile dvs. personale cu furnizorii de servicii pentru a ne ajuta să oferim serviciile noastre și să ne îndeplinim contractele cu dvs., așa cum este descris mai sus. De exemplu:<br>
+      Folosim Shopify pentru a alimenta magazinul nostru online. Puteți citi mai multe despre modul în care Shopify utilizează informațiile personale aici: <a href="https://www.shopify.com/legal/privacy" target="_blank">https://www.shopify.com/legal/privacy</a>.<br>
+      Putem partaja informațiile dvs. personale pentru a respecta legile și reglementările, pentru a răspunde la citații sau mandate de percheziție sau pentru a ne proteja drepturile.
+    </p>
+
+    <h3>Publicitate comportamentală</h3>
+    <p>
+      Folosim informațiile dvs. personale pentru a vă oferi reclame direcționate sau comunicări de marketing care considerăm că ar putea fi de interes pentru dvs. De exemplu:<br>
+      Utilizăm Google Analytics pentru a înțelege modul de utilizare a Site-ului. Puteți citi mai multe despre politica de confidențialitate Google aici: <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank">https://www.google.com/intl/en/policies/privacy/</a> și puteți renunța la Google Analytics aici: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">https://tools.google.com/dlpage/gaoptout</a>.<br>
+      Împărtășim informații despre modul în care utilizați Site-ul, achizițiile și interacțiunea cu reclamele noastre cu partenerii de publicitate, direct sau prin tehnologii similare (cookie-uri etc.).<br>
+      Folosim Shopify Audiences pentru a afișa reclame pe alte site-uri către cumpărători care au făcut achiziții cu alți comercianți Shopify și care ar putea fi interesați de produsele noastre.
+    </p>
+    <p>
+      Pentru mai multe informații despre publicitatea direcționată, vizitați pagina educațională a Network Advertising Initiative („NAI”) la <a href="https://www.networkadvertising.org/understanding-online-advertising/how-does-it-work" target="_blank">https://www.networkadvertising.org/understanding-online-advertising/how-does-it-work</a>.<br>
+      Puteți renunța la publicitatea direcționată prin următoarele legături:<br>
+      FACEBOOK – <a href="https://www.facebook.com/settings/?tab=ads" target="_blank">https://www.facebook.com/settings/?tab=ads</a><br>
+      GOOGLE – <a href="https://www.google.com/settings/ads/anonymous" target="_blank">https://www.google.com/settings/ads/anonymous</a><br>
+      BING – <a href="https://advertise.bingads.microsoft.com/en-us/resources/policies/personalized-ads" target="_blank">https://advertise.bingads.microsoft.com/en-us/resources/policies/personalized-ads</a><br>
+      Și, de asemenea, puteți vizita portalul Digital Advertising Alliance la <a href="https://optout.aboutads.info/" target="_blank">https://optout.aboutads.info/</a>.
+    </p>
+
+    <h3>Utilizarea informațiilor personale</h3>
+    <p>
+      Folosim informațiile dvs. personale pentru a vă furniza serviciile noastre, inclusiv: oferirea de produse spre vânzare, procesarea plăților, expedierea și îndeplinirea comenzilor și comunicarea cu dvs. în legătură cu noile produse, servicii și oferte.
+    </p>
+
+    <h3>Baza legală</h3>
+    <p>
+      În conformitate cu Regulamentul general privind protecția datelor („GDPR”), dacă sunteți rezident al Spațiului Economic European („SEE”), prelucrăm informațiile dvs. personale pe baza:
+      <br>– consimțământului dvs.;
+      <br>– executării contractului dintre dvs. și Site;
+      <br>– respectării obligațiilor noastre legale;
+      <br>– protejării intereselor vitale;
+      <br>– îndeplinirii unei sarcini în interes public;
+      <br>– intereselor noastre legitime, care nu prevalează asupra drepturilor dvs. fundamentale.
+    </p>
+
+    <h3>Retenție</h3>
+    <p>
+      Când plasați o comandă prin intermediul Site-ului, păstrăm informațiile dvs. personale pentru evidențele noastre, până când ne cereți ștergerea acestora. Pentru informații despre dreptul dvs. de ștergere, consultați secțiunea „Drepturile tale” de mai jos.
+    </p>
+
+    <h3>Luare automată a deciziilor</h3>
+    <p>
+      Dacă sunteți rezident al SEE, aveți dreptul de a vă opune prelucrării bazate exclusiv pe decizii automate (inclusiv profilare) care au efecte juridice sau semnificative asupra dvs. Noi [FACEM/NU] folosim procese decizionale automatizate pentru a preveni frauda, fără a avea efecte legale sau semnificative asupra dvs.
+    </p>
+    <p>
+      Exemple de servicii care folosesc luarea automată a deciziilor:<br>
+      – Lista neagră temporară a adreselor IP asociate cu tranzacții eșuate repetate (persistă câteva ore).<br>
+      – Lista neagră temporară a cardurilor de credit asociate adreselor IP (persistă câteva zile).
+    </p>
+
+    <h3>Vânzarea informațiilor personale</h3>
+    <p>
+      Site-ul nostru vinde informații personale conform Legii privind confidențialitatea consumatorilor din California din 2018 („CCPA”).<br>
+      [Introduce:<br>
+      – categorii de informații vândute;<br>
+      – dacă utilizați publicul Shopify: informații despre utilizarea Site-ului, achizițiile și adresa de e-mail asociată;<br>
+      – instrucțiuni despre cum să renunțați la vânzare;<br>
+      – dacă vindeți informații despre minori (sub 16 ani) și dacă obțineți consimțământul;<br>
+      – dacă oferiți stimulente financiare pentru a vinde informații, furnizați detalii.]
+    </p>
+
+    <h3>Drepturile tale</h3>
+    <p>
+      <strong>GDPR:</strong> Dacă sunteți rezident al SEE, aveți dreptul de a accesa informațiile personale pe care le deținem despre dvs., de a le transfera altui furnizor și de a solicita corectarea, actualizarea sau ștergerea acestora. Pentru a vă exercita aceste drepturi, vă rugăm să ne contactați prin informațiile de contact de mai sus.<br>
+      Informațiile dvs. personale sunt procesate inițial în Irlanda și apoi transferate în afara Europei (inclusiv în Canada și Statele Unite). Pentru detalii, consultați Cartea albă GDPR a Shopify: <a href="https://help.shopify.com/en/manual/your-account/privacy/GDPR" target="_blank">https://help.shopify.com/en/manual/your-account/privacy/GDPR</a>.
+    </p>
+    <p>
+      <strong>CCPA:</strong> Dacă locuiți în California, aveți dreptul de a accesa, corecta și șterge informațiile personale pe care le deținem despre dvs. Pentru a vă exercita aceste drepturi sau pentru a desemna un agent autorizat, vă rugăm să ne contactați la adresa de mai sus.
+    </p>
+
+    <h3>Cookie-uri</h3>
+    <p>
+      Un cookie este o cantitate mică de informații descărcată pe dispozitivul dvs. când vizitați Site-ul. Folosim cookie-uri funcționale, de performanță, de publicitate și de rețele sociale pentru a vă îmbunătăți experiența, memorând acțiunile și preferințele (ex.: autentificarea sau selectarea regiunii). Acest lucru elimină necesitatea reintroducerii informațiilor la fiecare vizită sau navigare între pagini. Cookie-urile oferă și informații despre modul în care Site-ul este folosit (ex.: prima vizită sau vizitator frecvent).<br>
+      Folosiți lista curentă de cookie-uri a Shopify: <a href="https://www.shopify.com/legal/cookies" target="_blank">https://www.shopify.com/legal/cookies</a>.
+    </p>
+
+    <h3>Nu urmări</h3>
+    <p>
+      Vă rugăm să rețineți că, din cauza lipsei unui standard universal privind semnalele "Nu urmări", nu ne schimbăm practicile de colectare și utilizare a datelor în cazul detectării acestui semnal din browserul dvs.
+    </p>
+
+    <h3>Schimbări</h3>
+    <p>
+      Putem actualiza această Politică de confidențialitate periodic pentru a reflecta modificările practicilor noastre sau cerințele operaționale, legale sau de reglementare.
+    </p>
+
+    <h3>Reclamații</h3>
+    <p>
+      Dacă doriți să faceți o reclamație, vă rugăm să ne contactați prin e-mail sau poștă folosind detaliile de mai sus. Dacă nu sunteți mulțumit de răspunsul nostru, aveți dreptul să vă adresați autorității competente pentru protecția datelor. De exemplu, puteți consulta <a href="https://ico.org.uk/make-a-complaint/" target="_blank">https://ico.org.uk/make-a-complaint/</a>.
+    </p>
+
+    <p><em>Ultima actualizare: [26.04.2023]</em></p>
+  </section>
+
+  <!-- SECȚIUNEA "POLITICI ȘI INFORMAȚII" -->
+  <section class="info-section">
+    <h2>POLITICI ȘI INFORMAȚII</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <a href="rambursare.html">
+          <img src="rambursare.png" alt="Politica de rambursare">
+          <p>Politica de rambursare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="confidentialitate.html">
+          <img src="confidentialitate.png" alt="Politica de confidențialitate">
+          <p>Politica de confidențialitate</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="termeniiservici.html">
+          <img src="termenii serviciului.png" alt="Termenii serviciului">
+          <p>Termenii serviciului</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="livrare.html">
+          <img src="politicalivrare.png" alt="Politica de livrare">
+          <p>Politica de livrare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="informatiidecontact.html">
+          <img src="informatiidecontact.png" alt="Informații de contact">
+          <p>Informații de contact</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="aviz.html">
+          <img src="avizjurutic.png" alt="Aviz juridic">
+          <p>Aviz juridic</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <!-- Partea stângă: imagini ANPC și Autenticitate -->
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      <!-- Partea centrală: text și carduri de plată -->
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+    <!-- Bula WhatsApp -->
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+
+  <!-- Scripturi JS -->
+  <script>
+    // Meniu mobil (hamburger)
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+
+    // Funcții pentru bara de căutare
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

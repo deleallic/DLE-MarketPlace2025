@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace - Rambursare</title>
+
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Fundal negru */
+    html, body {
+      background-color: #000;
+    }
+
+    /* Bara de sus (transport gratuit) */
+    .top-bar {
+      background-color: #ffffff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    /* Bara de navigație cu gradient */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    /* Logo cu fade in */
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Meniul centrat */
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+
+    /* Icoanele + butonul hamburger */
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    /* =========================================
+       SECȚIUNEA: "POLITICA DE RETURNARE ȘI RAMBURSARE"
+       ========================================= */
+    .rambursare-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .rambursare-section h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .rambursare-section h3 {
+      font-size: 1.1rem;
+      margin-top: 25px;
+      font-weight: bold;
+      color: yellow; /* Titlurile de secțiuni vor fi galbene */
+    }
+    .rambursare-section p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    /* =========================================
+       SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
+       ========================================= */
+    .info-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .info-item {
+      text-align: center;
+    }
+    .info-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .info-item img {
+      width: 100%;
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .info-item img:hover {
+      transform: scale(1.1);
+    }
+    .info-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+
+    /* =========================================
+       Subsol (Footer)
+       ========================================= */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+
+    /* Responsivitate mobil */
+    @media (max-width: 768px) {
+      .top-bar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1100;
+        height: 40px;
+        line-height: 40px;
+      }
+      nav.navbar {
+        position: fixed;
+        top: 40px; left: 0; right: 0;
+        z-index: 1000;
+      }
+      #menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #555454e0;
+        flex-direction: column;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .menu-icon {
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+
+  <!-- Bara de navigație -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
+    </ul>
+    <div class="nav-icons">
+      <!-- Iconița de căutare -->
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru cont (login) -->
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru coș (cos.html) -->
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+
+  <!-- Overlay pentru bara de căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+
+  <!-- SECȚIUNEA: POLITICA DE RETURNARE ȘI RAMBURSARE -->
+  <section class="rambursare-section">
+    <h2>Politica de returnare și rambursare</h2>
+    <p>
+      Avem o politică de returnare de 30 de zile, ceea ce înseamnă că aveți la dispoziție 30 de zile de la primirea articolului pentru a solicita returnarea.
+    </p>
+    <p>
+      Organizarea returului, cât și costul acestuia cad în sarcina vânzătorului.
+    </p>
+    <p>
+      Pentru a fi eligibil pentru returnare, articolul dumneavoastră trebuie să fie în aceeași stare în care l-ați primit, nepurtat sau nefolosit, cu etichete și în ambalajul original. Veți avea nevoie și de chitanța sau dovada achiziției. <strong>Excepție face produsele de tip telefoane, tablete, PC-uri, casti, laptopuri, care se pot testa în perioada de 30 de zile, însă nu se pot returna în cazul unui defect apărut în timpul utilizării neconforme.</strong>
+    </p>
+    <p>
+      Persoanele juridice nu au drept de retur indiferent de modalitatea de achiziție.
+    </p>
+    <p>
+      Pentru a începe procedura de retur, ne puteți contacta la <strong>suport@dle-marketplace.ro</strong>. Vă rugăm să rețineți că returnările vor trebui trimise la următoarea adresă: <strong>[Delea Alin, DLE-MarketPlace, Ploiești, Strada Padina, Tel: 0722687716]</strong>.
+    </p>
+    <p>
+      Articolele trimise înapoi la noi fără a solicita mai întâi retur nu vor fi acceptate.
+    </p>
+    <p>
+      Ne puteți contacta oricând pentru orice întrebare privind returnarea la <strong>contact@dle-marketplace.ro</strong>.
+    </p>
+    <h3>Daune și probleme</h3>
+    <p>
+      Vă rugăm să vă inspectați comanda la primire și să ne contactați imediat dacă articolul este defect, deteriorat sau dacă primiți articolul greșit, astfel încât să putem evalua problema și să o corectăm.
+    </p>
+    <h3>Excepții / articole nereturnabile</h3>
+    <p>
+      Anumite tipuri de articole nu pot fi returnate, cum ar fi bunuri perisabile (ex: alimente, flori, produse consumabile), produse personalizate (ex: comenzi speciale sau articole personalizate) și produse de îngrijire personală (ex: produse de înfrumusețare). De asemenea, nu acceptăm returnări de materiale periculoase, lichide inflamabile sau gaze. Vă rugăm să ne contactați dacă aveți întrebări sau nelămuriri cu privire la articolul dumneavoastră.
+    </p>
+    <p>
+      Din păcate, nu putem accepta returnări ale cardurilor cadou.
+    </p>
+    <h3>Schimburile</h3>
+    <p>
+      Cea mai rapidă modalitate de a vă asigura că obțineți ceea ce doriți este să returnați articolul pe care îl aveți și, odată ce returnarea este acceptată, să faceți o achiziție separată pentru noul articol.
+    </p>
+    <h3>Uniunea Europeană, perioadă de 30 zile</h3>
+    <p>
+      Fără a aduce atingere celor de mai sus, dacă mărfurile sunt expediate în Uniunea Europeană, aveți dreptul să anulați sau să returnați comanda în termen de 30 de zile, din orice motiv și fără o justificare. La fel, articolul dumneavoastră trebuie să fie în aceeași stare în care l-ați primit, nepurtat sau nefolosit, cu etichete și în ambalajul original. Veți avea nevoie și de chitanța sau dovada achiziției.
+    </p>
+    <h3>Rambursări</h3>
+    <p>
+      Vă vom anunța după primirea și inspectarea returnării dumneavoastră și vă vom informa dacă rambursarea a fost aprobată sau nu. Dacă este aprobată, veți fi rambursat automat pe metoda de plată inițială în termen de 10 zile lucrătoare. Vă rugăm să rețineți că poate dura ceva timp pentru ca banca sau compania dvs. de card de credit să proceseze și să posteze rambursarea. Dacă au trecut mai mult de 15 zile lucrătoare de la aprobarea returnării, vă rugăm să ne contactați la <strong>contact@dle-marketplace.ro</strong>.
+    </p>
+  </section>
+
+  <!-- SECȚIUNEA "POLITICI ȘI INFORMAȚII" -->
+  <section class="info-section">
+    <h2>POLITICI ȘI INFORMAȚII</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <a href="rambursare.html">
+          <img src="rambursare.png" alt="Politica de rambursare">
+          <p>Politica de rambursare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="confidentialitate.html">
+          <img src="confidentialitate.png" alt="Politica de confidențialitate">
+          <p>Politica de confidențialitate</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="termeniiservici.html">
+          <img src="termenii serviciului.png" alt="Termenii serviciului">
+          <p>Termenii serviciului</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="livrare.html">
+          <img src="politicalivrare.png" alt="Politica de livrare">
+          <p>Politica de livrare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="informatiidecontact.html">
+          <img src="informatiidecontact.png" alt="Informații de contact">
+          <p>Informații de contact</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="aviz.html">
+          <img src="avizjurutic.png" alt="Aviz juridic">
+          <p>Aviz juridic</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <!-- Partea stângă: imagini ANPC și Autenticitate -->
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      
+      <!-- Partea centrală: text și carduri de plată -->
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+
+    <!-- Bula WhatsApp -->
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+
+  <!-- Scripturi JS -->
+  <script>
+    // Meniu mobil (hamburger)
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+
+    // Funcții pentru bara de căutare
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

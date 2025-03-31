@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace - Termenii serviciului</title>
+
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Fundal negru */
+    html, body {
+      background-color: #000;
+    }
+    
+    /* Bara de sus */
+    .top-bar {
+      background-color: #ffffff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    
+    /* Navbar cu gradient */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    
+    /* =========================================
+       SECȚIUNEA: "TERMENII SERVICIULUI"
+       ========================================= */
+    .termeni-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      color: #fff;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+    .termeni-section h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .termeni-section h3 {
+      font-size: 1.1rem;
+      margin-top: 25px;
+      font-weight: bold;
+    }
+    .termeni-section p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    
+    /* =========================================
+       SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
+       ========================================= */
+    .info-section {
+      margin: 50px auto 80px;
+      max-width: 1200px;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .info-item {
+      text-align: center;
+    }
+    .info-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .info-item img {
+      width: 100%;
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .info-item img:hover {
+      transform: scale(1.1);
+    }
+    .info-item p {
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+    
+    /* =========================================
+       Subsol (Footer)
+       ========================================= */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+    
+    /* Responsivitate mobil */
+    @media (max-width: 768px) {
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1100;
+        height: 40px;
+        line-height: 40px;
+      }
+      nav.navbar {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      #menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #555454e0;
+        flex-direction: column;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+      #menu li {
+        margin: 15px 0;
+      }
+      .menu-icon {
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+
+  <!-- Bara de navigație -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
+      <li><a href="confidentialitate.html">CONFIDENȚIALITATE</a></li>
+      <li><a href="termeniiservici.html">TERMENII SERVICIULUI</a></li>
+    </ul>
+    <div class="nav-icons">
+      <!-- Iconița de căutare -->
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru cont (login) -->
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <!-- Iconița pentru coș (cos.html) -->
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+  
+  <!-- Overlay pentru bara de căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+  
+  <!-- SECȚIUNEA: TERMENII SERVICIULUI -->
+  <section class="termeni-section">
+    <h2>Termenii serviciului</h2>
+    <p>
+      Acești Termeni și Condiții de Utilizare ("Termeni") reglementează accesul și utilizarea marketplace-ului online DLE-MarketPlace, o platformă dedicată vânzării de electronice, accesorii și produse conexe. Prin accesarea și utilizarea site-ului nostru, sunteți de acord să respectați acești Termeni.
+    </p>
+    
+    <h3>1. Acceptarea Termenilor</h3>
+    <p>
+      Prin utilizarea DLE-MarketPlace, declarați că ați citit, înțeles și acceptați să respectați acești Termeni, inclusiv orice modificări ulterioare. Dacă nu sunteți de acord cu acești Termeni, vă rugăm să nu utilizați site-ul.
+    </p>
+    
+    <h3>2. Descrierea Serviciilor</h3>
+    <p>
+      DLE-MarketPlace oferă o platformă de marketplace online care pune în legătură vânzători și cumpărători de electronice. Site-ul nostru permite publicarea, vânzarea și achiziționarea de produse, precum și accesul la informații, recenzii și evaluări ale produselor.
+    </p>
+    
+    <h3>3. Utilizarea Site-ului</h3>
+    <p>
+      Utilizatorii se angajează să utilizeze site-ul în mod responsabil, să furnizeze informații exacte și să nu folosească platforma în scopuri ilegale sau frauduloase. Este interzisă manipularea sau modificarea informațiilor afișate pe site.
+    </p>
+    
+    <h3>4. Contul Utilizatorului</h3>
+    <p>
+      Pentru a efectua cumpărături sau pentru a posta anunțuri, este posibil să fie necesară crearea unui cont. Sunteți responsabil pentru păstrarea confidențialității contului dvs. și pentru toate activitățile desfășurate sub acesta.
+    </p>
+    
+    <h3>5. Comenzi și Plăți</h3>
+    <p>
+      Toate comenzile plasate prin intermediul site-ului sunt supuse confirmării de către vânzător și respectării condițiilor de plată specificate. Drepturile de proprietate și riscurile aferente produselor se transferă la confirmarea comenzii.
+    </p>
+    
+    <h3>6. Politica de Returnare</h3>
+    <p>
+      Pentru informații detaliate privind returnările, vă rugăm să consultați pagina noastră dedicată Politicii de rambursare. Aceasta face parte integrantă din acești Termeni.
+    </p>
+    
+    <h3>7. Proprietatea Intelectuală</h3>
+    <p>
+      Conținutul DLE-MarketPlace, inclusiv textul, grafica, logo-ul și imaginile, este protejat prin drepturi de autor și alte drepturi de proprietate intelectuală. Utilizarea neautorizată a acestui conținut este strict interzisă.
+    </p>
+    
+    <h3>8. Limitarea Răspunderii</h3>
+    <p>
+      DLE-MarketPlace nu va fi responsabil pentru eventuale daune sau pierderi care rezultă din utilizarea site-ului, inclusiv, dar fără a se limita la, erori de sistem, întreruperi ale serviciilor sau informații incorecte furnizate de terți.
+    </p>
+    
+    <h3>9. Modificări ale Termenilor</h3>
+    <p>
+      Ne rezervăm dreptul de a modifica acești Termeni în orice moment. Orice modificare va fi postată pe site, iar utilizarea continuă a platformei constituie acceptarea automată a noilor condiții.
+    </p>
+    
+    <h3>10. Legislația Aplicabilă și Jurisdicția</h3>
+    <p>
+      Acești Termeni sunt guvernați de legea română. Orice dispută care decurge din sau în legătură cu acești Termeni va fi soluționată de instanțele competente din România.
+    </p>
+  </section>
+  
+  <!-- SECȚIUNEA "POLITICI ȘI INFORMAȚII" -->
+  <section class="info-section">
+    <h2>POLITICI ȘI INFORMAȚII</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <a href="rambursare.html">
+          <img src="rambursare.png" alt="Politica de rambursare">
+          <p>Politica de rambursare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="confidentialitate.html">
+          <img src="confidentialitate.png" alt="Politica de confidențialitate">
+          <p>Politica de confidențialitate</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="termeniiservici.html">
+          <img src="termenii serviciului.png" alt="Termenii serviciului">
+          <p>Termenii serviciului</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="livrare.html">
+          <img src="politicalivrare.png" alt="Politica de livrare">
+          <p>Politica de livrare</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="informatiidecontact.html">
+          <img src="informatiidecontact.png" alt="Informații de contact">
+          <p>Informații de contact</p>
+        </a>
+      </div>
+      <div class="info-item">
+        <a href="aviz.html">
+          <img src="avizjurutic.png" alt="Aviz juridic">
+          <p>Aviz juridic</p>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+  
+  <!-- Scripturi JS -->
+  <script>
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
