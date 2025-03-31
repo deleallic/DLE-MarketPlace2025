@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DLE-MarketPlace - Politica de livrare</title>
+  <title>DLE-MarketPlace - Rambursare</title>
 
   <style>
     /* Reset de bază */
@@ -13,11 +13,13 @@
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
+    
     /* Fundal negru */
     html, body {
       background-color: #000;
     }
-    /* Bara de sus */
+
+    /* Bara de sus (transport gratuit) */
     .top-bar {
       background-color: #ffffff;
       color: #000;
@@ -26,7 +28,8 @@
       padding: 8px 0;
       font-size: 14px;
     }
-    /* Navbar cu gradient */
+
+    /* Bara de navigație cu gradient */
     nav.navbar {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -35,6 +38,8 @@
       padding: 10px 20px;
       transition: all 0.3s ease;
     }
+
+    /* Logo cu fade in */
     .logo {
       color: #fff;
       font-size: 1.2rem;
@@ -45,6 +50,8 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* Meniul centrat */
     #menu {
       display: flex;
       justify-content: center;
@@ -60,6 +67,8 @@
     #menu li a:hover {
       color: #ffdf00;
     }
+
+    /* Icoanele + butonul hamburger */
     .nav-icons {
       display: flex;
       align-items: center;
@@ -86,6 +95,7 @@
       margin-left: 15px;
       cursor: pointer;
     }
+
     /* Overlay pentru bara de căutare */
     .search-overlay {
       display: none;
@@ -127,32 +137,35 @@
       cursor: pointer;
       font-size: 1.2rem;
     }
+
     /* =========================================
-       SECȚIUNEA: POLITICA DE LIVRARE
+       SECȚIUNEA: "POLITICA DE RETURNARE ȘI RAMBURSARE"
        ========================================= */
-    .livrare-section {
+    .rambursare-section {
       margin: 50px auto 80px;
       max-width: 1200px;
       color: #fff;
       padding: 0 20px;
-      line-height: 1.6;
     }
-    .livrare-section h2 {
+    .rambursare-section h2 {
       font-size: 2rem;
       margin-bottom: 30px;
       font-weight: bold;
       text-transform: uppercase;
       text-align: center;
     }
-    .livrare-section h3 {
+    .rambursare-section h3 {
       font-size: 1.1rem;
       margin-top: 25px;
       font-weight: bold;
+      color: yellow; /* Titlurile de secțiuni vor fi galbene */
     }
-    .livrare-section p {
+    .rambursare-section p {
       font-size: 0.95rem;
       margin-bottom: 15px;
+      line-height: 1.4;
     }
+
     /* =========================================
        SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
        ========================================= */
@@ -209,6 +222,7 @@
         gap: 15px;
       }
     }
+
     /* =========================================
        Subsol (Footer)
        ========================================= */
@@ -298,6 +312,7 @@
       height: 24px;
       margin-left: 8px;
     }
+
     /* Responsivitate mobil */
     @media (max-width: 768px) {
       .top-bar {
@@ -331,11 +346,6 @@
       .menu-icon {
         display: inline-block;
       }
-      /* Spațiu suplimentar pentru titlu pe mobil */
-      .rambursare-section,
-      .livrare-section {
-        margin-top: 100px;
-      }
     }
   </style>
 </head>
@@ -345,8 +355,8 @@
   <div class="top-bar">
     TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
   </div>
-  
-  <!-- Navbar -->
+
+  <!-- Bara de navigație -->
   <nav class="navbar">
     <div class="logo">DLE-MarketPlace</div>
     <ul id="menu">
@@ -359,18 +369,21 @@
       <li><a href="ceasuri.html">CEASURI</a></li>
     </ul>
     <div class="nav-icons">
+      <!-- Iconița de căutare -->
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="M21 21l-4.3-4.3"></path>
         </svg>
       </a>
+      <!-- Iconița pentru cont (login) -->
       <a href="login.html" aria-label="Contul meu">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="7" r="4"></circle>
           <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
         </svg>
       </a>
+      <!-- Iconița pentru coș (cos.html) -->
       <a href="cos.html" aria-label="Coș de cumpărături">
         <svg viewBox="0 0 24 24">
           <path d="M6 2v4"></path>
@@ -382,7 +395,7 @@
       <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
     </div>
   </nav>
-  
+
   <!-- Overlay pentru bara de căutare -->
   <div class="search-overlay" id="searchOverlay">
     <div class="search-box">
@@ -391,43 +404,56 @@
       <span class="close-search" onclick="closeSearch()">X</span>
     </div>
   </div>
-  
-  <!-- SECȚIUNEA: POLITICA DE LIVRARE -->
-  <section class="livrare-section">
-    <h2>Politica de livrare</h2>
+
+  <!-- SECȚIUNEA: POLITICA DE RETURNARE ȘI RAMBURSARE -->
+  <section class="rambursare-section">
+    <h2>Politica de returnare și rambursare</h2>
     <p>
-      Politica noastră de expediere este concepută pentru a se asigura că clienții noștri primesc comenzile în timp util și eficient, oferindu-le în același timp flexibilitatea și opțiunile de care au nevoie pentru a se potrivi nevoilor lor individuale.
+      Avem o politică de returnare de 30 de zile, ceea ce înseamnă că aveți la dispoziție 30 de zile de la primirea articolului pentru a solicita returnarea.
     </p>
-    <h3>Metode de livrare și termene de livrare</h3>
     <p>
-      Oferim o gamă largă de metode de expediere, inclusiv transport terestru standard, expediere rapidă și transport internațional. Termenele de livrare variază în funcție de metoda aleasă și destinația expedierii. Vă vom furniza o dată estimată de livrare la finalizarea plății, însă aceasta este doar o estimare și poate fi modificată din cauza unor circumstanțe neprevăzute (ex.: vreme, întârzieri ale transportatorului).
+      Organizarea returului, cât și costul acestuia cad în sarcina vânzătorului.
     </p>
-    <h3>Prelucrare și procesare a comenzilor</h3>
     <p>
-      Ne străduim să procesăm și să onorăm comenzile cât mai repede posibil, de obicei în 1-2 zile lucrătoare de la primire. Odată ce comanda este procesată, veți primi un e-mail de confirmare a expedierii cu informații de urmărire, care vă permite să monitorizați coletul online.
+      Pentru a fi eligibil pentru returnare, articolul dumneavoastră trebuie să fie în aceeași stare în care l-ați primit, nepurtat sau nefolosit, cu etichete și în ambalajul original. Veți avea nevoie și de chitanța sau dovada achiziției. <strong>Excepție face produsele de tip telefoane, tablete, PC-uri, casti, laptopuri, care se pot testa în perioada de 30 de zile, însă nu se pot returna în cazul unui defect apărut în timpul utilizării neconforme.</strong>
     </p>
-    <h3>Costuri de livrare</h3>
     <p>
-      Costurile de transport variază în funcție de metoda aleasă, greutatea și dimensiunile coletului. Oferim tarife competitive și ne străduim să menținem costurile cât mai reduse, asigurând totodată o livrare fiabilă și la timp.
+      Persoanele juridice nu au drept de retur indiferent de modalitatea de achiziție.
     </p>
-    <h3>Transport internațional</h3>
     <p>
-      Oferim transport internațional în multe țări. Rețineți că tarifele pentru transport internațional pot fi mai mari decât cele interne și se pot aplica taxe vamale sau costuri suplimentare. DLE‑MarketPlace nu este responsabil pentru aceste costuri.
+      Pentru a începe procedura de retur, ne puteți contacta la <strong>suport@dle-marketplace.ro</strong>. Vă rugăm să rețineți că returnările vor trebui trimise la următoarea adresă: <strong>[Delea Alin, DLE-MarketPlace, Ploiești, Strada Padina, Tel: 0722687716]</strong>.
     </p>
-    <h3>Restricții de expediere</h3>
     <p>
-      Unele produse pot fi supuse restricțiilor de transport din cauza dimensiunii, greutății sau conținutului. Informațiile despre aceste restricții vor fi furnizate la finalizarea plății. Nu suntem responsabili pentru întârzierile sau costurile suplimentare cauzate de restricțiile de expediere.
+      Articolele trimise înapoi la noi fără a solicita mai întâi retur nu vor fi acceptate.
     </p>
-    <h3>Deteriorări de expediere și retururi</h3>
     <p>
-      Ambalăm cu grijă produsele pentru a ne asigura că ajung în stare excelentă. Dacă coletul este deteriorat în timpul transportului, vă rugăm să ne contactați imediat pentru a aranja o înlocuire sau rambursare. Este posibil să solicităm dovezi fotografice pentru a procesa reclamația.
+      Ne puteți contacta oricând pentru orice întrebare privind returnarea la <strong>contact@dle-marketplace.ro</strong>.
     </p>
-    <h3>Probleme de livrare</h3>
+    <h3>Daune și probleme</h3>
     <p>
-      Dacă coletul dvs. este întârziat sau pierdut în tranzit, vă rugăm să ne contactați imediat pentru a iniția o investigație cu transportatorul. DLE‑MarketPlace nu este responsabil pentru pachetele pierdute sau furate după livrare la adresa indicată de client.
+      Vă rugăm să vă inspectați comanda la primire și să ne contactați imediat dacă articolul este defect, deteriorat sau dacă primiți articolul greșit, astfel încât să putem evalua problema și să o corectăm.
+    </p>
+    <h3>Excepții / articole nereturnabile</h3>
+    <p>
+      Anumite tipuri de articole nu pot fi returnate, cum ar fi bunuri perisabile (ex: alimente, flori, produse consumabile), produse personalizate (ex: comenzi speciale sau articole personalizate) și produse de îngrijire personală (ex: produse de înfrumusețare). De asemenea, nu acceptăm returnări de materiale periculoase, lichide inflamabile sau gaze. Vă rugăm să ne contactați dacă aveți întrebări sau nelămuriri cu privire la articolul dumneavoastră.
+    </p>
+    <p>
+      Din păcate, nu putem accepta returnări ale cardurilor cadou.
+    </p>
+    <h3>Schimburile</h3>
+    <p>
+      Cea mai rapidă modalitate de a vă asigura că obțineți ceea ce doriți este să returnați articolul pe care îl aveți și, odată ce returnarea este acceptată, să faceți o achiziție separată pentru noul articol.
+    </p>
+    <h3>Uniunea Europeană, perioadă de 30 zile</h3>
+    <p>
+      Fără a aduce atingere celor de mai sus, dacă mărfurile sunt expediate în Uniunea Europeană, aveți dreptul să anulați sau să returnați comanda în termen de 30 de zile, din orice motiv și fără o justificare. La fel, articolul dumneavoastră trebuie să fie în aceeași stare în care l-ați primit, nepurtat sau nefolosit, cu etichete și în ambalajul original. Veți avea nevoie și de chitanța sau dovada achiziției.
+    </p>
+    <h3>Rambursări</h3>
+    <p>
+      Vă vom anunța după primirea și inspectarea returnării dumneavoastră și vă vom informa dacă rambursarea a fost aprobată sau nu. Dacă este aprobată, veți fi rambursat automat pe metoda de plată inițială în termen de 10 zile lucrătoare. Vă rugăm să rețineți că poate dura ceva timp pentru ca banca sau compania dvs. de card de credit să proceseze și să posteze rambursarea. Dacă au trecut mai mult de 15 zile lucrătoare de la aprobarea returnării, vă rugăm să ne contactați la <strong>contact@dle-marketplace.ro</strong>.
     </p>
   </section>
-  
+
   <!-- SECȚIUNEA "POLITICI ȘI INFORMAȚII" -->
   <section class="info-section">
     <h2>POLITICI ȘI INFORMAȚII</h2>
@@ -445,7 +471,7 @@
         </a>
       </div>
       <div class="info-item">
-        <a href="termeniiservici.html">
+        <a href="termeni.html">
           <img src="termenii serviciului.png" alt="Termenii serviciului">
           <p>Termenii serviciului</p>
         </a>
@@ -457,7 +483,7 @@
         </a>
       </div>
       <div class="info-item">
-        <a href="informatiidecontact.html">
+        <a href="contact.html">
           <img src="informatiidecontact.png" alt="Informații de contact">
           <p>Informații de contact</p>
         </a>
@@ -470,14 +496,17 @@
       </div>
     </div>
   </section>
-  
-  <!-- Footer -->
+
+  <!-- Subsol (Footer) -->
   <footer>
     <div class="footer-row">
+      <!-- Partea stângă: imagini ANPC și Autenticitate -->
       <div class="footer-left">
         <img src="anpc.jpg" alt="ANPC" />
         <img src="original.jpg" alt="Autenticitate" />
       </div>
+      
+      <!-- Partea centrală: text și carduri de plată -->
       <div class="footer-center">
         <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
         <div class="payment-cards">
@@ -488,17 +517,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Bula WhatsApp -->
     <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
       Salut, ne poți contacta aici!
       <img src="whatapp.jpg" alt="WhatsApp">
     </div>
   </footer>
-  
+
+  <!-- Scripturi JS -->
   <script>
+    // Meniu mobil (hamburger)
     function toggleMenu() {
       var menu = document.getElementById("menu");
       menu.classList.toggle("show");
     }
+
+    // Funcții pentru bara de căutare
     function toggleSearch() {
       document.querySelector('.navbar').style.display = 'none';
       document.getElementById('searchOverlay').style.display = 'flex';
