@@ -17,7 +17,7 @@
       background-color: #000;
     }
     
-    /* Bara de sus */
+    /* Bara de sus (transport gratuit) */
     .top-bar {
       background-color: #ffffff;
       color: #000;
@@ -92,9 +92,7 @@
     .search-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 60px;
       background-color: #111;
       z-index: 2000;
@@ -306,21 +304,18 @@
       margin-left: 8px;
     }
     
+    /* Responsivitate mobil */
     @media (max-width: 768px) {
       .top-bar {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 0; right: 0;
         z-index: 1100;
         height: 40px;
         line-height: 40px;
       }
       nav.navbar {
         position: fixed;
-        top: 40px;
-        left: 0;
-        right: 0;
+        top: 40px; left: 0; right: 0;
         z-index: 1000;
       }
       #menu {
@@ -342,10 +337,15 @@
       .menu-icon {
         display: inline-block;
       }
+      /* Spațiu suplimentar pentru titlu pe mobil */
+      .livrare-section {
+        margin-top: 100px;
+      }
     }
   </style>
 </head>
 <body>
+
   <!-- Bara superioară -->
   <div class="top-bar">
     TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
@@ -362,9 +362,6 @@
       <li><a href="pc.html">PC</a></li>
       <li><a href="laptopuri.html">LAPTOPURI</a></li>
       <li><a href="ceasuri.html">CEASURI</a></li>
-      <li><a href="confidentialitate.html">CONFIDENȚIALITATE</a></li>
-      <li><a href="termeniiservici.html">TERMENII SERVICIULUI</a></li>
-      <li><a href="livrare.html">LIVRARE</a></li>
     </ul>
     <div class="nav-icons">
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
