@@ -356,6 +356,10 @@
       .menu-icon {
         display: inline-block;
       }
+      /* Spațiu suplimentar pentru titlu pe mobil */
+      .confidentialitate-section {
+        margin-top: 100px;
+      }
     }
   </style>
 </head>
@@ -377,24 +381,20 @@
       <li><a href="pc.html">PC</a></li>
       <li><a href="laptopuri.html">LAPTOPURI</a></li>
       <li><a href="ceasuri.html">CEASURI</a></li>
-      <li><a href="confidentialitate.html">CONFIDENȚIALITATE</a></li>
     </ul>
     <div class="nav-icons">
-      <!-- Iconița de căutare -->
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="M21 21l-4.3-4.3"></path>
         </svg>
       </a>
-      <!-- Iconița pentru cont (login) -->
       <a href="login.html" aria-label="Contul meu">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="7" r="4"></circle>
           <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
         </svg>
       </a>
-      <!-- Iconița pentru coș (cos.html) -->
       <a href="cos.html" aria-label="Coș de cumpărături">
         <svg viewBox="0 0 24 24">
           <path d="M6 2v4"></path>
@@ -406,7 +406,7 @@
       <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
     </div>
   </nav>
-
+  
   <!-- Overlay pentru bara de căutare -->
   <div class="search-overlay" id="searchOverlay">
     <div class="search-box">
@@ -415,7 +415,7 @@
       <span class="close-search" onclick="closeSearch()">X</span>
     </div>
   </div>
-
+  
   <!-- SECȚIUNEA: POLITICA DE CONFIDENȚIALITATE -->
   <section class="confidentialitate-section">
     <h2>Politica de confidențialitate</h2>
@@ -606,12 +606,10 @@
   <!-- Subsol (Footer) -->
   <footer>
     <div class="footer-row">
-      <!-- Partea stângă: imagini ANPC și Autenticitate -->
       <div class="footer-left">
         <img src="anpc.jpg" alt="ANPC" />
         <img src="original.jpg" alt="Autenticitate" />
       </div>
-      <!-- Partea centrală: text și carduri de plată -->
       <div class="footer-center">
         <p>DLE-MarketPlace-2025 - Toate drepturile rezervate</p>
         <div class="payment-cards">
@@ -622,22 +620,17 @@
         </div>
       </div>
     </div>
-    <!-- Bula WhatsApp -->
     <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
       Salut, ne poți contacta aici!
       <img src="whatapp.jpg" alt="WhatsApp">
     </div>
   </footer>
 
-  <!-- Scripturi JS -->
   <script>
-    // Meniu mobil (hamburger)
     function toggleMenu() {
       var menu = document.getElementById("menu");
       menu.classList.toggle("show");
     }
-
-    // Funcții pentru bara de căutare
     function toggleSearch() {
       document.querySelector('.navbar').style.display = 'none';
       document.getElementById('searchOverlay').style.display = 'flex';
