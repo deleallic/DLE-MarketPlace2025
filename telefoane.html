@@ -269,6 +269,36 @@
     .buy-btn:hover {
       background-color: #e5c900;
     }
+    /* Butonul de ștergere pentru produsele adăugate */
+    .delete-btn {
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+      width: 100%;
+    }
+    .delete-btn:hover {
+      background-color: #e60000;
+    }
+    /* Badge pentru produse second hand */
+    .second-hand-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(255, 223, 0, 0.8);
+      color: #000;
+      padding: 5px;
+      font-size: 0.8rem;
+      border-radius: 3px;
+      font-weight: bold;
+      z-index: 10;
+    }
     /* SECȚIUNEA "Adaugă Anunț" */
     .add-announcement {
       background-color: #222;
@@ -276,7 +306,6 @@
       border-radius: 5px;
       margin-top: 40px;
     }
-    /* Titlul secțiunii "Adaugă Anunț" – culorile inițiale (galben) */
     .add-announcement h2 {
       color: #ffdf00;
       margin-bottom: 15px;
@@ -561,57 +590,38 @@
 
     <!-- Grid cu produsele existente -->
     <div class="products-grid" id="productsGrid">
-      <!-- Produs 1 -->
+      <!-- Produsele statice existente (fără buton de ștergere) -->
       <a href="iphonedetali.html" class="product-card" data-price="5999" data-brand="iPhone">
         <img src="16promaxfata.jpg" alt="iPhone 15 Pro">
         <h2>iPhone 15 Pro</h2>
-        <div class="price">
-          5.999,00 lei
-        </div>
-        <div class="monthly">
-          de la 249 lei/lună
-        </div>
+        <div class="price">5.999,00 lei</div>
+        <div class="monthly">de la 249 lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
-      <!-- Produs 2 -->
       <a href="samsungS23.html" class="product-card" data-price="4499" data-brand="Samsung">
         <img src="s25ultra.jpg" alt="Samsung Galaxy S23">
         <h2>Samsung Galaxy S23</h2>
-        <div class="price">
-          4.499,00 lei
-        </div>
-        <div class="monthly">
-          de la 199 lei/lună
-        </div>
+        <div class="price">4.499,00 lei</div>
+        <div class="monthly">de la 199 lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
-      <!-- Produs 3 -->
       <a href="xiaomi13pro.html" class="product-card" data-price="3999" data-brand="Xiaomi">
         <img src="pixel9fata.jpg" alt="Xiaomi 13 Pro">
         <h2>Xiaomi 13 Pro</h2>
-        <div class="price">
-          3.999,00 lei
-        </div>
-        <div class="monthly">
-          de la 179 lei/lună
-        </div>
+        <div class="price">3.999,00 lei</div>
+        <div class="monthly">de la 179 lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
-      <!-- Produs 4 -->
       <a href="googlepixel7.html" class="product-card" data-price="3299" data-brand="Google">
         <img src="fold6.jpg" alt="Google Pixel 7">
         <h2>Google Pixel 7</h2>
-        <div class="price">
-          3.299,00 lei
-        </div>
-        <div class="monthly">
-          de la 149 lei/lună
-        </div>
+        <div class="price">3.299,00 lei</div>
+        <div class="monthly">de la 149 lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
       </a>
     </div>
 
-    <!-- Zona de adăugare a anunțului, aflată sub produsele existente -->
+    <!-- Zona de adăugare a anunțului -->
     <div class="add-announcement" id="addAnnouncementContainer">
       <h2>Adaugă Anunț</h2>
       <form id="addAnnouncementForm">
@@ -694,7 +704,7 @@
       });
     });
 
-    // Stocăm toate produsele într-o variabilă globală pentru a filtra întotdeauna din lista completă
+    // Stocăm toate produsele într-o variabilă globală pentru filtrări ulterioare
     var allProductCards = Array.from(document.querySelectorAll('.products-grid .product-card'));
 
     // Funcționalitatea de filtrare după brand și sortare după preț
@@ -722,7 +732,38 @@
       });
     }
 
-    // Funcționalitatea de adăugare a anunțului
+    // Funcție de randare a unui produs adăugat (cu badge "Second Hand")
+    function renderProduct(product) {
+      var newCard = document.createElement('a');
+      newCard.href = "#";
+      newCard.className = "product-card";
+      newCard.setAttribute("data-price", product.price);
+      // Extragem brandul din titlu (primul cuvânt)
+      var brand = product.title.split(" ")[0];
+      newCard.setAttribute("data-brand", brand);
+      newCard.setAttribute("data-id", product.id);
+      newCard.innerHTML = `
+        <div class="second-hand-badge">Second Hand</div>
+        <img src="${product.imgUrl}" alt="${product.title}">
+        <h2>${product.title}</h2>
+        <div class="price">${parseFloat(product.price).toLocaleString('ro-RO')} lei</div>
+        <div class="monthly">de la ${product.monthly} lei/lună</div>
+        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
+        <button class="delete-btn" onclick="deleteProduct(event, ${product.id})">Șterge</button>
+      `;
+      document.getElementById('productsGrid').appendChild(newCard);
+      allProductCards.push(newCard);
+    }
+
+    // La încărcarea paginii, încărcăm produsele salvate în localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+      var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
+      addedProducts.forEach(function(product) {
+        renderProduct(product);
+      });
+    });
+
+    // Funcționalitatea de adăugare a anunțului și salvarea în localStorage
     document.getElementById('addAnnouncementForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var title = document.getElementById('prodTitle').value;
@@ -730,25 +771,41 @@
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
       var rating = document.getElementById('prodRating').value;
-      var newCard = document.createElement('a');
-      newCard.href = "#";
-      newCard.className = "product-card";
-      newCard.setAttribute("data-price", price);
-      // Extragem brandul din titlu (primul cuvânt)
-      var brand = title.split(" ")[0];
-      newCard.setAttribute("data-brand", brand);
-      newCard.innerHTML = `
-        <img src="${imgUrl}" alt="${title}">
-        <h2>${title}</h2>
-        <div class="price">${parseFloat(price).toLocaleString('ro-RO')} lei</div>
-        <div class="monthly">de la ${monthly} lei/lună</div>
-        <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
-      `;
-      document.getElementById('productsGrid').appendChild(newCard);
-      // Adăugăm noul produs în lista globală pentru filtrări ulterioare
-      allProductCards.push(newCard);
+      var productId = Date.now();
+      var product = {
+        id: productId,
+        title: title,
+        imgUrl: imgUrl,
+        price: price,
+        monthly: monthly,
+        rating: rating
+      };
+      // Salvăm produsul în localStorage
+      var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
+      addedProducts.push(product);
+      localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
+      renderProduct(product);
       this.reset();
     });
+
+    // Funcția pentru ștergerea unui produs adăugat
+    function deleteProduct(event, productId) {
+      event.preventDefault();
+      event.stopPropagation();
+      // Ștergem din DOM produsul corespunzător
+      var cardToDelete = document.querySelector('.product-card[data-id="'+productId+'"]');
+      if(cardToDelete) {
+        cardToDelete.remove();
+      }
+      // Actualizăm localStorage
+      var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
+      addedProducts = addedProducts.filter(function(prod) { return prod.id !== productId; });
+      localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
+      // Ștergem din lista globală allProductCards
+      allProductCards = allProductCards.filter(function(card) {
+        return card.getAttribute('data-id') != productId;
+      });
+    }
 
     // Funcția pentru adăugarea unui produs în coșul de cumpărături
     function addToCart(event, button) {
