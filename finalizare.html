@@ -271,6 +271,31 @@
               <span>Ramburs</span>
             </label>
           </div>
+          <!-- Pentru metoda "Card", se afișează câmpurile pentru card și opțiunea de plată în rate -->
+          <div id="installmentOptionContainer" style="display: block; margin-top: 10px;">
+            <!-- Checkbox pentru plata în rate (se afișează doar dacă Card este selectat) -->
+            <label style="font-weight: bold;">
+              <input type="checkbox" id="installmentCheckbox" onclick="toggleInstallmentOptions()">
+              Plata în rate
+            </label>
+            <div id="rateOptions" style="display: none; margin-top: 10px;">
+              <label for="numRates">Număr de rate:</label>
+              <select id="numRates">
+                <option value="2">2 rate</option>
+                <option value="3">3 rate</option>
+                <option value="4">4 rate</option>
+                <option value="5">5 rate</option>
+                <option value="6">6 rate</option>
+                <option value="7">7 rate</option>
+                <option value="8">8 rate</option>
+                <option value="9">9 rate</option>
+                <option value="10">10 rate</option>
+                <option value="11">11 rate</option>
+                <option value="12">12 rate</option>
+              </select>
+              <div id="rateInfo" style="margin-top: 10px; font-weight: bold;">Valoare rată: 0 Lei</div>
+            </div>
+          </div>
         </div>
         <!-- Chenar cu câmpuri pentru card -->
         <div class="card-fields" id="cardFields">
@@ -302,12 +327,11 @@
   </div>
 
   <script>
-    // Citește produsele din localStorage
+    // Codul pentru afișarea produselor din coș (preluate din localStorage)
     let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
     const cartTotalElement = document.getElementById('cartTotal');
 
-    // Funcție pentru afișarea produselor în secțiunea "Sumar Comandă"
     function displayCartItems() {
       cartItemsContainer.innerHTML = "";
       let total = 0;
@@ -335,57 +359,106 @@
       cartTotalElement.textContent = total.toLocaleString('ro-RO') + " Lei";
     }
 
-    // Funcție pentru ștergerea unui produs
     function removeItem(index) {
       cart.splice(index, 1);
       localStorage.setItem('cartItems', JSON.stringify(cart));
       displayCartItems();
     }
 
-    // Afișăm produsele la încărcarea paginii
     displayCartItems();
 
-    // Funcție care afișează/ascunde chenarul pentru card
+    // Funcție pentru afișarea/ascunderea câmpurilor pentru card și rate
     function toggleCardFields() {
       const cardRadio = document.querySelector('input[name="paymentMethod"][value="card"]');
       const cardFields = document.getElementById('cardFields');
+      const installmentOptionContainer = document.getElementById('installmentOptionContainer');
+      // Dacă metoda selectată este "card", afișăm câmpurile de card și opțiunea pentru rate
       if (cardRadio.checked) {
         cardFields.style.display = "block";
+        // Afișăm containerul opțiunilor de rate
+        document.getElementById('installmentOptionContainer').style.display = "block";
+        // Dacă checkbox-ul pentru rate este bifat, afișăm rateOptions
+        const installmentCheckbox = document.getElementById('installmentCheckbox');
+        if(installmentCheckbox.checked) {
+          document.getElementById('rateOptions').style.display = "block";
+          updateRateInfo();
+        } else {
+          document.getElementById('rateOptions').style.display = "none";
+        }
       } else {
         cardFields.style.display = "none";
+        document.getElementById('installmentOptionContainer').style.display = "none";
       }
     }
     toggleCardFields();
 
-    // La submit, salvăm comanda în istoricul comenzilor și sincronizăm cu contul logat
+    // Funcție pentru a afișa/ascunde opțiunile de rate la bifarea checkbox-ului
+    function toggleInstallmentOptions() {
+      const installmentCheckbox = document.getElementById('installmentCheckbox');
+      const rateOptions = document.getElementById('rateOptions');
+      if (installmentCheckbox.checked) {
+        rateOptions.style.display = "block";
+        updateRateInfo();
+      } else {
+        rateOptions.style.display = "none";
+      }
+    }
+
+    // Actualizează informațiile despre rate
+    const numRatesSelect = document.getElementById('numRates');
+    const rateInfoDiv = document.getElementById('rateInfo');
+
+    numRatesSelect.addEventListener('change', updateRateInfo);
+
+    function updateRateInfo() {
+      let total = 0;
+      cart.forEach(product => {
+        total += parseFloat(product.price) || 0;
+      });
+      const numRates = parseInt(numRatesSelect.value);
+      const rateValue = total / numRates;
+      rateInfoDiv.textContent = "Valoare rată: " + rateValue.toLocaleString('ro-RO', {minimumFractionDigits: 2}) + " Lei";
+    }
+
+    // Eveniment de submit pentru formularul de checkout
     const checkoutForm = document.getElementById('checkoutForm');
     checkoutForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // Calculăm totalul comenzii
       let total = 0;
       cart.forEach(product => {
         total += parseFloat(product.price) || 0;
       });
 
-      // Obținem utilizatorul logat (dacă există)
-      const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+      // Obținem metoda de plată selectată
+      const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      let paymentDetails = "";
+      if (selectedPaymentMethod === "card") {
+        const installmentCheckbox = document.getElementById('installmentCheckbox');
+        if (installmentCheckbox.checked) {
+          const numRates = parseInt(document.getElementById('numRates').value);
+          const rateValue = total / numRates;
+          paymentDetails = "Plată cu card în rate: " + numRates + " rate de " + rateValue.toLocaleString('ro-RO', {minimumFractionDigits: 2}) + " Lei fiecare.";
+        } else {
+          paymentDetails = "Plată cu card integral.";
+        }
+      } else if (selectedPaymentMethod === "ramburs") {
+        paymentDetails = "Plată ramburs.";
+      }
 
-      // Creăm un obiect pentru comanda curentă
-      const newOrder = {
-        orderId: Date.now(), // Generare simplă de ID
+      // Creăm obiectul comenzii
+      const order = {
+        orderId: Date.now(),
         orderDate: new Date().toISOString(),
         items: cart,
         total: total.toLocaleString('ro-RO') + " Lei",
-        // Sincronizăm comanda cu contul logat, dacă există
-        userEmail: loggedUser ? loggedUser.email : null,
-        // Salvăm și titlurile produselor pentru afișare rapidă
-        products: cart.map(product => product.title)
+        paymentMethod: selectedPaymentMethod,
+        paymentDetails: paymentDetails
       };
 
-      // Citim comenzile existente sau inițializăm un array nou
+      // Salvăm comanda (exemplu simplu în localStorage)
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      orders.push(newOrder);
+      orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
 
       // Golește coșul și actualizează afișarea
@@ -393,11 +466,12 @@
       localStorage.setItem('cartItems', JSON.stringify(cart));
       displayCartItems();
 
-      alert("Comanda a fost plasată și salvată în istoricul comenzilor!");
+      alert("Comanda a fost plasată! " + paymentDetails);
 
-      // Opțional: redirecționează utilizatorul către pagina contului (ex: login.html)
-      // window.location.href = "login.html";
+      // Opțional: redirecționează utilizatorul către o altă pagină
+      // window.location.href = "final.html";
     });
   </script>
 </body>
 </html>
+
