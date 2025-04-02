@@ -629,7 +629,6 @@
         <input type="text" id="prodImg" placeholder="URL imagine" required />
         <input type="number" id="prodPrice" placeholder="Preț (lei)" required />
         <input type="number" id="prodMonthly" placeholder="Preț lunar (lei)" required />
-        <input type="text" id="prodRating" placeholder="Rating și recenzii" required />
         <button type="submit">Adaugă</button>
       </form>
     </div>
@@ -763,22 +762,20 @@
       });
     });
 
-    // Funcționalitatea de adăugare a anunțului și salvarea în localStorage
+    // Funcționalitatea de adăugare a anunțului și salvarea în localStorage (fără rating)
     document.getElementById('addAnnouncementForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var title = document.getElementById('prodTitle').value;
       var imgUrl = document.getElementById('prodImg').value;
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
-      var rating = document.getElementById('prodRating').value;
       var productId = Date.now();
       var product = {
         id: productId,
         title: title,
         imgUrl: imgUrl,
         price: price,
-        monthly: monthly,
-        rating: rating
+        monthly: monthly
       };
       // Salvăm produsul în localStorage
       var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
