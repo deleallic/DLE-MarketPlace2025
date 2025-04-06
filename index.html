@@ -343,6 +343,81 @@
     }
 
     /* =========================================
+       SECȚIUNEA: Newsletter
+       ========================================= */
+    .newsletter-section {
+      background-color: #000;  /* Fundal complet negru */
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .newsletter-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .newsletter-section p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    .newsletter-section form {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .newsletter-section input[type="email"] {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      width: 250px;
+      background: transparent;
+      color: #fff;
+    }
+    .newsletter-section button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffdf00;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .newsletter-section button:hover {
+      background-color: #e5c900;
+    }
+
+    /* =========================================
+       SECȚIUNEA: "URMĂREȘTE-NE ȘI PE SOCIAL MEDIA"
+       ========================================= */
+    .social-media-section {
+      background-color: #000;
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 40px; /* Adaugă distanță suplimentară sub această secțiune */
+    }
+    .social-media-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .social-icons a img {
+      width: 50px;  /* Aceeași dimensiune pentru toate logo-urile */
+      height: auto;
+      transition: transform 0.3s;
+    }
+    .social-icons a img:hover {
+      transform: scale(1.1);
+    }
+
+    /* =========================================
        SECȚIUNEA: "POLITICI ȘI INFORMAȚII"
        ========================================= */
     .info-section {
@@ -625,7 +700,7 @@
     <div class="feature-row">
       <img src="16promana.jpg" alt="iPhone 16 Pro Max">
       <div class="feature-content">
-        <h3>IPHONE 16 PRO MAX </h3>
+        <h3>IPHONE 16 PRO MAX</h3>
         <p>
           Descoperă noul iPhone 16 Pro Max, cu un design inovativ, performanță remarcabilă și tehnologie de ultimă oră.
           Experimentează performanță de top, o cameră revoluționară și un ecran impresionant.
@@ -640,7 +715,7 @@
       <div class="feature-content">
         <h3>Apple Airpods Pro Max</h3>
         <p>
-          Descoperă noile casti Airpods Pro 2, cu un design inovativ, sunet remarcabil și tehnologie de ultimă oră. 
+          Descoperă noile casti Airpods Pro 2, cu un design inovativ, sunet remarcabil și tehnologie de ultimă oră.
         </p>
         <p>Produse noi</p>
         <button onclick="window.location.href='airpods.html'">Airpods Pro Max</button>
@@ -652,11 +727,40 @@
       <div class="feature-content">
         <h3>Apple Watch 10</h3>
         <p>
-          Descopera noul Apple Watch 10 , cu un design nou si inovativ , acum cu si mai multe functii si caracteristici.
+          Descoperă noul Apple Watch 10, cu un design nou și inovativ, acum cu și mai multe funcții și caracteristici.
         </p>
         <p>Produse noi</p>
         <button onclick="window.location.href='applewatch.html'">Apple Watch 10</button>
       </div>
+    </div>
+  </section>
+
+  <!-- Secțiunea de Newsletter -->
+  <section class="newsletter-section">
+    <h2>Abonează-te la newsletter-ul DLE-MarketPlace</h2>
+    <p>Fii la curent cu noile produse și reduceri exclusive!</p>
+    <form action="#" method="post">
+      <input type="email" placeholder="Adresa ta de email" required>
+      <button type="submit">Abonează-te</button>
+    </form>
+  </section>
+
+  <!-- Secțiunea "Urmărește-ne și pe Social Media" -->
+  <section class="social-media-section">
+    <h2>Urmărește-ne și pe Social Media</h2>
+    <div class="social-icons">
+      <a href="https://instagram.com/dle-marketplace" target="_blank">
+        <img src="instagramlogo1.jpg" alt="Instagram">
+      </a>
+      <a href="https://tiktok.com/@dle-marketplace" target="_blank">
+        <img src="tiktoklogo.jpg" alt="TikTok">
+      </a>
+      <a href="https://facebook.com/dle-marketplace" target="_blank">
+        <img src="facebooklogo1.jpg" alt="Facebook">
+      </a>
+      <a href="https://youtube.com/dle-marketplace" target="_blank">
+        <img src="youtubelogo.jpg" alt="YouTube">
+      </a>
     </div>
   </section>
 
