@@ -501,11 +501,11 @@
     <ul id="menu">
       <li><a href="index.html">ACASĂ</a></li>
       <li><a href="telefoane.html">TELEFOANE</a></li>
-      <li><a href="#">TABLETE</a></li>
-      <li><a href="#">CASTI</a></li>
-      <li><a href="#">PC</a></li>
-      <li><a href="#">LAPTOPURI</a></li>
-      <li><a href="#">CEASURI</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
     </ul>
     <div class="nav-icons">
       <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
@@ -553,9 +553,6 @@
       <div class="hero-item">
         <img src="16pro.jpg" alt="Imagine 3" />
       </div>
-      <div class="hero-item">
-        <img src="nouapozaiphone.jpg" alt="Imagine 4" />
-      </div>
     </div>
     <div class="hero-arrows">
       <span class="hero-prev">&#10094;</span>
@@ -593,7 +590,7 @@
       <!-- Produsele statice existente (fără buton de ștergere) -->
       <a href="iphonedetali.html" class="product-card" data-price="5999" data-brand="iPhone">
         <img src="16promaxfata.jpg" alt="iPhone 15 Pro">
-        <h2>iPhone 15 Pro</h2>
+        <h2>iPhone 16 Pro</h2>
         <div class="price">5.999,00 lei</div>
         <div class="monthly">de la 249 lei/lună</div>
         <button class="buy-btn" onclick="addToCart(event, this)">Cumpară</button>
@@ -625,6 +622,8 @@
     <div class="add-announcement" id="addAnnouncementContainer">
       <h2>Adaugă Anunț</h2>
       <form id="addAnnouncementForm">
+        <!-- Câmp ascuns pentru categorie -->
+        <input type="hidden" id="prodCategory" value="telefoane" />
         <input type="text" id="prodTitle" placeholder="Titlu produs" required />
         <input type="text" id="prodImg" placeholder="URL imagine" required />
         <input type="number" id="prodPrice" placeholder="Preț (lei)" required />
@@ -740,6 +739,8 @@
       // Extragem brandul din titlu (primul cuvânt)
       var brand = product.title.split(" ")[0];
       newCard.setAttribute("data-brand", brand);
+      // Setăm atributul de categorie
+      newCard.setAttribute("data-category", product.category);
       newCard.setAttribute("data-id", product.id);
       newCard.innerHTML = `
         <div class="second-hand-badge">Second Hand</div>
@@ -755,10 +756,13 @@
     }
 
     // La încărcarea paginii, încărcăm produsele salvate în localStorage
+    // și afișăm doar anunțurile cu categoria "telefoane"
     document.addEventListener('DOMContentLoaded', function() {
       var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
       addedProducts.forEach(function(product) {
-        renderProduct(product);
+        if(product.category === "telefoane"){
+          renderProduct(product);
+        }
       });
     });
 
@@ -769,13 +773,16 @@
       var imgUrl = document.getElementById('prodImg').value;
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
+      // Extragem categoria din câmpul ascuns
+      var category = document.getElementById('prodCategory').value;
       var productId = Date.now();
       var product = {
         id: productId,
         title: title,
         imgUrl: imgUrl,
         price: price,
-        monthly: monthly
+        monthly: monthly,
+        category: category
       };
       // Salvăm produsul în localStorage
       var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
@@ -827,3 +834,4 @@
   </script>
 </body>
 </html>
+
