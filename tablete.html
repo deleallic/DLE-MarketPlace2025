@@ -625,6 +625,8 @@
     <div class="add-announcement" id="addAnnouncementContainer">
       <h2>Adaugă Anunț</h2>
       <form id="addAnnouncementForm">
+        <!-- Câmp ascuns pentru categorie -->
+        <input type="hidden" id="prodCategory" value="tablete" />
         <input type="text" id="prodTitle" placeholder="Titlu produs" required />
         <input type="text" id="prodImg" placeholder="URL imagine" required />
         <input type="number" id="prodPrice" placeholder="Preț (lei)" required />
@@ -740,6 +742,8 @@
       // Extragem brandul din titlu (primul cuvânt)
       var brand = product.title.split(" ")[0];
       newCard.setAttribute("data-brand", brand);
+      // Setăm atributul de categorie
+      newCard.setAttribute("data-category", product.category);
       newCard.setAttribute("data-id", product.id);
       newCard.innerHTML = `
         <div class="second-hand-badge">Second Hand</div>
@@ -754,11 +758,14 @@
       allProductCards.push(newCard);
     }
 
-    // La încărcarea paginii, încărcăm produsele salvate în localStorage
+    // La încărcarea paginii, încărcăm produsele salvate în localStorage,
+    // dar afișăm doar anunțurile cu categoria "tablete"
     document.addEventListener('DOMContentLoaded', function() {
       var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
       addedProducts.forEach(function(product) {
-        renderProduct(product);
+        if (product.category === "tablete") {
+          renderProduct(product);
+        }
       });
     });
 
@@ -769,13 +776,16 @@
       var imgUrl = document.getElementById('prodImg').value;
       var price = document.getElementById('prodPrice').value;
       var monthly = document.getElementById('prodMonthly').value;
+      // Extragem categoria din câmpul ascuns
+      var category = document.getElementById('prodCategory').value;
       var productId = Date.now();
       var product = {
         id: productId,
         title: title,
         imgUrl: imgUrl,
         price: price,
-        monthly: monthly
+        monthly: monthly,
+        category: category
       };
       // Salvăm produsul în localStorage
       var addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
@@ -824,6 +834,20 @@
       localStorage.setItem('cartItems', JSON.stringify(cart));
       alert(title + " a fost adăugat în coș!");
     }
+
+    // Funcționalitatea butonului "Full Screen" pentru imaginea principală
+    const mainImage = document.querySelector('.main-image');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    fullscreenBtn.addEventListener('click', () => {
+      if (mainImage.requestFullscreen) {
+        mainImage.requestFullscreen();
+      } else if (mainImage.webkitRequestFullscreen) { /* Safari */
+        mainImage.webkitRequestFullscreen();
+      } else if (mainImage.msRequestFullscreen) { /* IE11 */
+        mainImage.msRequestFullscreen();
+      }
+    });
   </script>
 </body>
 </html>
+
