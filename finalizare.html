@@ -230,6 +230,21 @@
       max-width: 200px;
       border-radius: 4px;
     }
+    /* Stil pentru butonul Acasă */
+    .home-btn {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 20px auto 0 auto;
+      display: block;
+    }
+    .home-btn:hover {
+      background-color: #e5c900;
+    }
     /* Responsivitate */
     @media (max-width: 768px) {
       .checkout-container {
@@ -501,7 +516,7 @@
         </div>`;
       }
 
-      // Înlocuim containerul principal cu mesajul de confirmare și imaginea produsului/produselor
+      // Înlocuim containerul principal cu mesajul de confirmare, imaginile produselor și butonul Acasă
       const checkoutContainer = document.querySelector('.checkout-container');
       checkoutContainer.innerHTML = `
         <div class="confirmation-container">
@@ -511,6 +526,7 @@
           <p>Total: ${total.toLocaleString('ro-RO')} Lei</p>
           <p>Un mesaj de confirmare a fost trimis pe email: ${document.getElementById('email').value}</p>
           <p>Produsul va fi livrat în aproximativ 3-4 zile lucrătoare &#10003;</p>
+          <button class="home-btn" onclick="window.location.href='index.html'">Acasă</button>
         </div>
       `;
     });
