@@ -486,7 +486,7 @@
       }
 
       // Crearea obiectului comenzii
-      const order = {
+      let order = {
         orderId: Date.now(),
         orderDate: new Date().toISOString(),
         items: cart,
@@ -494,6 +494,15 @@
         paymentMethod: selectedPaymentMethod,
         paymentDetails: paymentDetails
       };
+
+      // ADĂUGARE: Verificare dacă există un utilizator logat, apoi se adaugă proprietatea userEmail
+      let loggedUser = localStorage.getItem('loggedUser');
+      if (loggedUser) {
+        order.userEmail = JSON.parse(loggedUser).email;
+      } else {
+        // În cazul în care nu este logat, se preia email-ul din formular
+        order.userEmail = document.getElementById('email').value;
+      }
 
       // Salvăm comanda (exemplu folosind localStorage)
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
@@ -533,4 +542,3 @@
   </script>
 </body>
 </html>
-
