@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DLE-MarketPlace - iPad Pro 11</title>
+  <style>
+    /* Reset de bază */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    /* Fundal negru */
+    html, body {
+      background-color: #000;
+    }
+    /* Bara de sus */
+    .top-bar {
+      background-color: #fff;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    /* Bara de navigație */
+    nav.navbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      background: linear-gradient(to right, #444, #222);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .logo {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    #menu {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+    #menu li a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    #menu li a:hover {
+      color: #ffdf00;
+    }
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .nav-icons a {
+      display: inline-flex;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .nav-icons svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    /* Overlay pentru bara de căutare */
+    .search-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      z-index: 2000;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .search-box .search-icon {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .search-box .close-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    /* Secțiunea DETALII PRODUS */
+    .product-detail-section {
+      max-width: 1200px;
+      margin: 60px auto 40px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      color: #fff;
+    }
+    .product-detail-left {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .main-image {
+      width: 100%;
+      max-width: 500px; /* imaginea principală mărită */
+      height: auto;
+      border-radius: 4px;
+    }
+    .thumbs-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .thumbs-container img {
+      width: 90px; /* dimensiune mărită pentru miniaturi */
+      height: auto;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.3s;
+    }
+    .thumbs-container img:hover {
+      transform: scale(1.1);
+    }
+    .product-detail-right {
+      flex: 1 1 50%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .product-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .product-price {
+      font-size: 1.3rem;
+      color: #ffdf00;
+      margin-bottom: 10px;
+    }
+    .product-specs {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      border: 1px solid #444;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .add-to-cart-btn {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      width: fit-content;
+      transition: background-color 0.3s;
+    }
+    .add-to-cart-btn:hover {
+      background-color: #e5c900;
+    }
+    @media (max-width: 768px) {
+      .product-detail-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      .product-detail-left, .product-detail-right {
+        flex: 1 1 100%;
+        padding: 10px;
+      }
+      .main-image {
+        max-width: 300px;
+      }
+    }
+    /* Secțiunea DESCRIERE */
+    .description-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #111;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .description-section h2 {
+      text-align: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    /* Secțiunea VIDEO de prezentare */
+    .video-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .video-section h2 {
+      color: #fff;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .video-container iframe,
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    /* Secțiunea RECENZII */
+    .reviews-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #111;
+      border-radius: 4px;
+      color: #fff;
+    }
+    .reviews-section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .reviews-list {
+      margin-bottom: 20px;
+    }
+    .review-item {
+      border-bottom: 1px solid #444;
+      padding: 10px 0;
+    }
+    .review-item:last-child {
+      border-bottom: none;
+    }
+    .review-author {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #ffdf00;
+    }
+    .review-meta {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    .review-text {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .review-form input, .review-form textarea, .review-form select {
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+    }
+    .review-form button {
+      background-color: #ffdf00;
+      color: #000;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .review-form button:hover {
+      background-color: #e5c900;
+    }
+    /* Subsol (Footer) */
+    footer {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      font-size: 0.9rem;
+      position: relative;
+      text-align: center;
+    }
+    @media (min-width: 769px) {
+      .footer-row {
+        position: relative;
+        height: 100px;
+      }
+      .footer-left {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+      .footer-left img {
+        max-width: 60px;
+        height: auto;
+        margin-right: 5px;
+      }
+      .footer-center {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .payment-cards {
+        margin-top: 10px;
+      }
+      .whatsapp-bubble {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer-left,
+      .footer-center {
+        position: static;
+        margin: 10px 0;
+      }
+      .whatsapp-bubble {
+        position: static;
+        margin-top: 10px;
+      }
+      .footer-left img {
+        max-width: 30px;
+      }
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .payment-cards {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .payment-cards img {
+      max-width: 50px;
+      height: auto;
+    }
+    .whatsapp-bubble {
+      background-color: #ddd;
+      color: #000;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .whatsapp-bubble img {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+    /* Media query pentru meniul mobil */
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+      #menu {
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        background-color: rgba(85,84,84,0.88);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+      }
+      #menu.show {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bara superioară -->
+  <div class="top-bar">
+    TRANSPORT GRATUIT ÎN ROMÂNIA LA TOATE COMENZILE
+  </div>
+
+  <!-- Bara de navigație -->
+  <nav class="navbar">
+    <div class="logo">DLE-MarketPlace</div>
+    <ul id="menu">
+      <li><a href="index.html">ACASĂ</a></li>
+      <li><a href="telefoane.html">TELEFOANE</a></li>
+      <li><a href="tablete.html">TABLETE</a></li>
+      <li><a href="casti.html">CASTI</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="laptopuri.html">LAPTOPURI</a></li>
+      <li><a href="ceasuri.html">CEASURI</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="javascript:void(0)" aria-label="Căutare" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </a>
+      <a href="login.html" aria-label="Contul meu">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21v-2a6.5 6.5 0 0113 0v2"></path>
+        </svg>
+      </a>
+      <a href="cos.html" aria-label="Coș de cumpărături">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2v4"></path>
+          <path d="M18 2v4"></path>
+          <path d="M3 6h18v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"></path>
+          <path d="M16 10a4 4 0 01-8 0"></path>
+        </svg>
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+  </nav>
+
+  <!-- Overlay pentru bara de căutare -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" placeholder="Căutare..." id="searchInput" />
+      <span class="search-icon">Q</span>
+      <span class="close-search" onclick="closeSearch()">X</span>
+    </div>
+  </div>
+
+  <!-- Secțiunea DETALII PRODUS (iPad Pro 11) -->
+  <section class="product-detail-section">
+    <div class="product-detail-left">
+      <!-- Imagine principală -->
+      <img class="main-image" src="ipad11pro1.jpg" alt="iPad Pro 11 - imagine frontală">
+      <!-- Miniaturi suplimentare -->
+      <div class="thumbs-container">
+        <img src="ipad11pro1.jpg" alt="iPad Pro 11 - Față" class="thumb">
+        <img src="ipad11pro2.jpg" alt="iPad Pro 11 - Lateral" class="thumb">
+        <img src="ipad11.pro3.jpg" alt="iPad Pro 11 - Spate" class="thumb">
+        <img src="ipad11.pro4.jpg" alt="iPad Pro 11 - Cameră" class="thumb">
+        <img src="ipad11pro5.jpg" alt="iPad Pro 11 - Cameră" class="thumb">
+        <img src="ipad11.pro6.jpg" alt="iPad Pro 11 - Cameră" class="thumb">
+      </div>
+    </div>
+    <div class="product-detail-right">
+      <h1 class="product-title">iPad Pro 11</h1>
+      <p class="product-price">7.599 Lei</p>
+      <div class="product-specs">
+        <p><strong>Display:</strong> 11" Liquid Retina</p>
+        <p><strong>Procesor:</strong> Apple M1 Chip</p>
+        <p><strong>Memorie:</strong> 8GB RAM, stocare de 128GB/256GB/512GB/1TB</p>
+        <p><strong>Cameră:</strong> Sistem dublu 12MP (Wide) + 10MP (Ultra Wide)</p>
+        <p><strong>Baterie:</strong> Până la 10 ore de utilizare continuă</p>
+        <p><strong>Sistem de operare:</strong> iPadOS 15</p>
+        <p><strong>Culori disponibile:</strong> Space Gray, Silver</p>
+      </div>
+      <button class="add-to-cart-btn" id="addToCartBtn">Adaugă în coș</button>
+      <p style="font-size: 0.95rem; margin-top: 10px; line-height: 1.4;">
+        Descoperă iPad Pro 11, tableta care îmbină performanțe remarcabile cu un design elegant.
+        Ecranul Liquid Retina de 11" și Apple M1 Chip îți oferă o experiență vizuală și de lucru de excepție,
+        indiferent dacă ești la birou sau în mișcare.
+      </p>
+    </div>
+  </section>
+
+  <!-- Secțiunea DESCRIERE -->
+  <section class="description-section">
+    <h2>Descriere</h2>
+    <p>
+      iPad Pro 11 redefinește modul în care te conectezi cu tehnologia. Cu un ecran impresionant Liquid Retina,
+      performanțe de top datorate Apple M1 Chip și un design subțire și ușor, această tabletă este creată pentru a te
+      sprijini în activități profesionale, divertisment și multitasking intens.
+    </p>
+    <p>
+      Beneficiind de o stocare flexibilă și o experiență iPadOS intuitivă, iPad Pro 11 este partenerul ideal pentru
+      crearea de conținut, navigare pe internet și jocuri, aducând inovația Apple direct în mâinile tale.
+    </p>
+  </section>
+
+  <!-- Secțiunea VIDEO de prezentare -->
+  <section class="video-section">
+    <h2>Video de prezentare</h2>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/UjmaxCyJBc4?start=6" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- Secțiunea RECENZII -->
+  <section class="reviews-section">
+    <h2>Recenzii</h2>
+    <div class="reviews-list" id="reviewsList">
+      <!-- Recenziile vor fi afișate aici -->
+    </div>
+    <!-- Formular pentru adăugarea unei recenzii cu rating și dată -->
+    <form class="review-form" id="reviewForm">
+      <input type="text" id="reviewAuthor" placeholder="Numele tău" required />
+      <select id="reviewRating" required>
+        <option value="">Selectează rating</option>
+        <option value="1">1 stea</option>
+        <option value="2">2 stele</option>
+        <option value="3">3 stele</option>
+        <option value="4">4 stele</option>
+        <option value="5">5 stele</option>
+      </select>
+      <textarea id="reviewText" placeholder="Scrie recenzia ta..." rows="4" required></textarea>
+      <button type="submit">Adaugă recenzie</button>
+    </form>
+  </section>
+
+  <!-- Subsol (Footer) -->
+  <footer>
+    <div class="footer-row">
+      <div class="footer-left">
+        <img src="anpc.jpg" alt="ANPC" />
+        <img src="original.jpg" alt="Autenticitate" />
+      </div>
+      <div class="footer-center">
+        <p>DLE-MarketPlace-2025-Toate drepturile rezervate</p>
+        <div class="payment-cards">
+          <img src="visa.jpg" alt="Visa">
+          <img src="applepay.jpg" alt="Apple Pay">
+          <img src="googlepay.jpg" alt="Google Pay">
+          <img src="revolutlogo.jpg" alt="Revolut">
+        </div>
+      </div>
+    </div>
+    <div class="whatsapp-bubble" onclick="window.open('https://wa.me/40000000000','_blank');">
+      Salut, ne poți contacta aici!
+      <img src="whatapp.jpg" alt="WhatsApp">
+    </div>
+  </footer>
+
+  <script>
+    // Meniu mobil (hamburger)
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+    // Funcții pentru bara de căutare
+    function toggleSearch() {
+      document.querySelector('.navbar').style.display = 'none';
+      document.getElementById('searchOverlay').style.display = 'flex';
+    }
+    function closeSearch() {
+      document.querySelector('.navbar').style.display = 'grid';
+      document.getElementById('searchOverlay').style.display = 'none';
+    }
+    // Schimbare imagine principală la click pe miniaturi
+    const mainImage = document.querySelector('.main-image');
+    const thumbs = document.querySelectorAll('.thumb');
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        mainImage.src = thumb.src;
+        mainImage.alt = thumb.alt;
+      });
+    });
+    // Funcționalitatea butonului "Adaugă în coș"
+    document.getElementById('addToCartBtn').addEventListener('click', function() {
+      const product = {
+        title: "iPad Pro 11",
+        price: "7599", // preț numeric fără formatare
+        image: document.querySelector('.main-image').src,
+        monthly: ""
+      };
+      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      cart.push(product);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      alert("Produsul a fost adăugat în coș!");
+    });
+    // Recenzii: încărcăm recenziile din localStorage
+    function loadReviews() {
+      let reviews = JSON.parse(localStorage.getItem('reviews_ipadpro11')) || [];
+      const reviewsList = document.getElementById('reviewsList');
+      reviewsList.innerHTML = "";
+      if (reviews.length === 0) {
+        reviewsList.innerHTML = "<p>Nu există recenzii pentru acest produs.</p>";
+      } else {
+        reviews.forEach(review => {
+          const reviewDiv = document.createElement('div');
+          reviewDiv.classList.add('review-item');
+          reviewDiv.innerHTML = `
+            <div class="review-author">${review.author} - ${"★".repeat(review.rating)} (${review.rating} stele)</div>
+            <div class="review-meta">Postat la: ${review.date}</div>
+            <div class="review-text">${review.text}</div>
+          `;
+          reviewsList.appendChild(reviewDiv);
+        });
+      }
+    }
+    // Formular pentru adăugarea unei recenzii cu rating și dată
+    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const author = document.getElementById('reviewAuthor').value.trim();
+      const rating = document.getElementById('reviewRating').value;
+      const text = document.getElementById('reviewText').value.trim();
+      if (!author || !rating || !text) return;
+      const now = new Date();
+      const dateString = now.toLocaleString('ro-RO');
+      let reviews = JSON.parse(localStorage.getItem('reviews_ipadpro11')) || [];
+      reviews.push({ author, rating, text, date: dateString });
+      localStorage.setItem('reviews_ipadpro11', JSON.stringify(reviews));
+      document.getElementById('reviewForm').reset();
+      loadReviews();
+    });
+    // Încărcăm inițial recenziile
+    loadReviews();
+  </script>
+</body>
+</html>
