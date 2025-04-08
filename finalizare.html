@@ -18,7 +18,7 @@
       color: #fff;
       margin: 0;
     }
-    /* Container principal */
+    /* Containerul principal */
     .checkout-container {
       display: flex;
       flex-wrap: wrap;
@@ -27,7 +27,7 @@
       padding: 20px;
       gap: 20px;
     }
-    /* Coloana stângă (date de livrare, metode de livrare, plată) */
+    /* Coloana stângă: date de livrare, plată */
     .checkout-left {
       flex: 1 1 60%;
       background-color: #111;
@@ -35,7 +35,7 @@
       padding: 20px;
       min-width: 300px;
     }
-    /* Coloana dreaptă (sumarul comenzii) */
+    /* Coloana dreaptă: sumarul comenzii */
     .checkout-right {
       flex: 1 1 35%;
       background-color: #111;
@@ -82,7 +82,7 @@
     textarea::placeholder {
       color: #666;
     }
-    /* Secțiunile de livrare și plată */
+    /* Secțiuni bloc */
     .section-block {
       margin-bottom: 20px;
       background-color: #222;
@@ -202,7 +202,35 @@
       padding-top: 10px;
       border-top: 1px solid #333;
     }
-    /* Responsivitate pentru ecrane mai mici */
+    /* Stiluri pentru secțiunea de confirmare */
+    .confirmation-container {
+      text-align: center;
+      padding: 40px;
+      background-color: #111;
+      border-radius: 4px;
+      max-width: 600px;
+      margin: 100px auto;
+    }
+    .confirmation-container h2 {
+      margin-bottom: 20px;
+      color: #ffdf00;
+    }
+    .confirmation-container p {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    .confirmation-products {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .confirmation-products img {
+      max-width: 200px;
+      border-radius: 4px;
+    }
+    /* Responsivitate */
     @media (max-width: 768px) {
       .checkout-container {
         flex-direction: column;
@@ -271,9 +299,8 @@
               <span>Ramburs</span>
             </label>
           </div>
-          <!-- Pentru metoda "Card", se afișează câmpurile pentru card și opțiunea de plată în rate -->
+          <!-- Pentru metoda "Card", opțiunea de plată în rate -->
           <div id="installmentOptionContainer" style="display: block; margin-top: 10px;">
-            <!-- Checkbox pentru plata în rate (se afișează doar dacă Card este selectat) -->
             <label style="font-weight: bold;">
               <input type="checkbox" id="installmentCheckbox" onclick="toggleInstallmentOptions()">
               Plata în rate
@@ -327,7 +354,7 @@
   </div>
 
   <script>
-    // Codul pentru afișarea produselor din coș (preluate din localStorage)
+    // Afișează produsele din coș (preluate din localStorage)
     let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
     const cartTotalElement = document.getElementById('cartTotal');
@@ -372,14 +399,11 @@
       const cardRadio = document.querySelector('input[name="paymentMethod"][value="card"]');
       const cardFields = document.getElementById('cardFields');
       const installmentOptionContainer = document.getElementById('installmentOptionContainer');
-      // Dacă metoda selectată este "card", afișăm câmpurile de card și opțiunea pentru rate
       if (cardRadio.checked) {
         cardFields.style.display = "block";
-        // Afișăm containerul opțiunilor de rate
-        document.getElementById('installmentOptionContainer').style.display = "block";
-        // Dacă checkbox-ul pentru rate este bifat, afișăm rateOptions
+        installmentOptionContainer.style.display = "block";
         const installmentCheckbox = document.getElementById('installmentCheckbox');
-        if(installmentCheckbox.checked) {
+        if (installmentCheckbox.checked) {
           document.getElementById('rateOptions').style.display = "block";
           updateRateInfo();
         } else {
@@ -387,12 +411,12 @@
         }
       } else {
         cardFields.style.display = "none";
-        document.getElementById('installmentOptionContainer').style.display = "none";
+        installmentOptionContainer.style.display = "none";
       }
     }
     toggleCardFields();
 
-    // Funcție pentru a afișa/ascunde opțiunile de rate la bifarea checkbox-ului
+    // Funcție pentru a afișa/ascunde opțiunile de rate
     function toggleInstallmentOptions() {
       const installmentCheckbox = document.getElementById('installmentCheckbox');
       const rateOptions = document.getElementById('rateOptions');
@@ -430,7 +454,7 @@
         total += parseFloat(product.price) || 0;
       });
 
-      // Obținem metoda de plată selectată
+      // Determinăm metoda de plată selectată
       const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
       let paymentDetails = "";
       if (selectedPaymentMethod === "card") {
@@ -438,7 +462,7 @@
         if (installmentCheckbox.checked) {
           const numRates = parseInt(document.getElementById('numRates').value);
           const rateValue = total / numRates;
-          paymentDetails = "Plată cu card în rate: " + numRates + " rate de " + rateValue.toLocaleString('ro-RO', {minimumFractionDigits: 2}) + " Lei fiecare.";
+          paymentDetails = "Plată cu card în " + numRates + " rate de " + rateValue.toLocaleString('ro-RO', {minimumFractionDigits: 2}) + " Lei fiecare.";
         } else {
           paymentDetails = "Plată cu card integral.";
         }
@@ -446,7 +470,7 @@
         paymentDetails = "Plată ramburs.";
       }
 
-      // Creăm obiectul comenzii
+      // Crearea obiectului comenzii
       const order = {
         orderId: Date.now(),
         orderDate: new Date().toISOString(),
@@ -456,7 +480,7 @@
         paymentDetails: paymentDetails
       };
 
-      // Salvăm comanda (exemplu simplu în localStorage)
+      // Salvăm comanda (exemplu folosind localStorage)
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
@@ -466,10 +490,29 @@
       localStorage.setItem('cartItems', JSON.stringify(cart));
       displayCartItems();
 
-      alert("Comanda a fost plasată! " + paymentDetails);
+      // Construim HTML-ul cu imaginile produselor achiziționate (dacă există)
+      let productsHTML = "";
+      if(order.items.length > 0) {
+        productsHTML = `<div class="confirmation-products">
+          ${order.items.map(item => `<div class="confirmation-product">
+            <img src="${item.image}" alt="${item.title}">
+            <p>${item.title}</p>
+          </div>`).join('')}
+        </div>`;
+      }
 
-      // Opțional: redirecționează utilizatorul către o altă pagină
-      // window.location.href = "final.html";
+      // Înlocuim containerul principal cu mesajul de confirmare și imaginea produsului/produselor
+      const checkoutContainer = document.querySelector('.checkout-container');
+      checkoutContainer.innerHTML = `
+        <div class="confirmation-container">
+          <h2>Comanda a fost plasată cu succes!</h2>
+          ${productsHTML}
+          <p>${paymentDetails}</p>
+          <p>Total: ${total.toLocaleString('ro-RO')} Lei</p>
+          <p>Un mesaj de confirmare a fost trimis pe email: ${document.getElementById('email').value}</p>
+          <p>Produsul va fi livrat în aproximativ 3-4 zile lucrătoare &#10003;</p>
+        </div>
+      `;
     });
   </script>
 </body>
